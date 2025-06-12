@@ -1,0 +1,12 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs 연맹 설문조사",
+    "subtitle": "가능한 시간을 공유하여 연맹 이벤트의 최적의 시간을 정하는 데 도움을 주세요.",
+    "inGameName": "게임 내 이름",
+    "timeZone": "시간대",
+    "availableTimes": "가능한 시간",
+    "submit": "제출",
+    "submitSuccess": "설문조사가 성공적으로 제출되었습니다!",
+    "submitError": "설문조사 제출 중 오류가 발생했습니다. 다시 시도해 주세요."
+  }
+}

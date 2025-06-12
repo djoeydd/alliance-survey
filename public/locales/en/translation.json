@@ -1,0 +1,14 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs Alliance Survey",
+    "subtitle": "Help us schedule the best times for alliance events by sharing your availability",
+    "inGameName": "In-Game Name (Optional)",
+    "timeZone": "Your Time Zone",
+    "availableTimes": "Available Time Slots",
+    "selectTime": "Select Time",
+    "addTime": "Add Time",
+    "submit": "Submit Survey",
+    "submitSuccess": "Survey submitted successfully!",
+    "submitError": "Failed to submit survey. Please try again."
+  }
+}

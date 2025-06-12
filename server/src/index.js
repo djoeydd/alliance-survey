@@ -1,0 +1,63 @@
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// MongoDB Connection
+const MONGODB_URI =
+  process.env.MONGODB_URI || "mongodb://localhost:27017/alliance-survey";
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
+
+// Survey Response Schema
+const surveyResponseSchema = new mongoose.Schema({
+  gameName: String,
+  timeZone: String,
+  timeRanges: [String],
+  createdAt: { type: Date, default: Date.now },
+});
+
+const SurveyResponse = mongoose.model("SurveyResponse", surveyResponseSchema);
+
+// API Routes
+app.post("/api/survey", async (req, res) => {
+  try {
+    const { gameName, timeZone, timeRanges } = req.body;
+    const response = new SurveyResponse({
+      gameName,
+      timeZone,
+      timeRanges,
+    });
+    await response.save();
+    res.status(201).json(response);
+  } catch (error) {
+    console.error("Error saving survey response:", error);
+    res.status(500).json({ error: "Failed to save survey response" });
+  }
+});
+
+app.get("/api/survey", async (req, res) => {
+  try {
+    const responses = await SurveyResponse.find().sort({ createdAt: -1 });
+    res.json(responses);
+  } catch (error) {
+    console.error("Error fetching survey responses:", error);
+    res.status(500).json({ error: "Failed to fetch survey responses" });
+  }
+});
+
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok" });
+});
+
+// Export the Express API
+module.exports = app;

@@ -1,0 +1,48 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs Alliantie Enquête",
+    "subtitle": "Help ons de beste tijden voor alliantie-evenementen te plannen door uw beschikbaarheid te delen",
+    "inGameName": "In-Game Naam (Optioneel)",
+    "timeZone": "Uw Tijdzone",
+    "availableTimes": "Beschikbare Tijdslots (Selecteer alle van toepassing zijnde)",
+    "selectTime": "Selecteer Tijd",
+    "addTime": "Tijd Toevoegen",
+    "submit": "Enquête Versturen",
+    "submitSuccess": "Enquête succesvol verzonden!",
+    "submitError": "Verzenden van enquête mislukt. Probeer het opnieuw.",
+    "timeZones": {
+      "local": "Uw Lokale Tijd",
+      "cities": {
+        "baker_island": "Baker Island, Howland Island",
+        "samoa": "Samoa, Amerikaans-Samoa",
+        "hawaii": "Hawaï, Tahiti",
+        "alaska": "Alaska, Anchorage",
+        "los_angeles": "Los Angeles, Vancouver",
+        "denver": "Denver, Phoenix",
+        "chicago": "Chicago, Mexico-Stad",
+        "new_york": "New York, Toronto",
+        "caracas": "Caracas, Santiago",
+        "sao_paulo": "São Paulo, Buenos Aires",
+        "fernando": "Fernando de Noronha, Zuid-Georgië",
+        "cape_verde": "Kaapverdië, Azoren",
+        "london": "Londen, Lissabon",
+        "paris": "Parijs, Berlijn",
+        "cairo": "Caïro, Athene",
+        "moscow": "Moskou, Istanboel",
+        "dubai": "Dubai, Bakoe",
+        "karachi": "Karachi, Tasjkent",
+        "new_delhi": "New Delhi, Colombo",
+        "dhaka": "Dhaka, Almaty",
+        "bangkok": "Bangkok, Jakarta",
+        "beijing": "Peking, Singapore",
+        "tokyo": "Tokio, Seoel",
+        "adelaide": "Adelaide, Darwin",
+        "sydney": "Sydney, Melbourne",
+        "solomon": "Salomonseilanden, Vanuatu",
+        "auckland": "Auckland, Fiji",
+        "samoa_tonga": "Samoa, Tonga",
+        "line_islands": "Line-eilanden"
+      }
+    }
+  }
+}

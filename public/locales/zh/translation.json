@@ -1,0 +1,12 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs 联盟调查",
+    "subtitle": "通过分享您的可用时间，帮助我们安排联盟活动的最佳时间。",
+    "inGameName": "游戏内名称",
+    "timeZone": "时区",
+    "availableTimes": "可用时间",
+    "submit": "提交",
+    "submitSuccess": "调查提交成功！",
+    "submitError": "提交调查时出错。请重试。"
+  }
+}

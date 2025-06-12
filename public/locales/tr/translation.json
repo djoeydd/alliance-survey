@@ -1,0 +1,12 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs İttifak Anketi",
+    "subtitle": "Müsait olduğunuz zamanları paylaşarak ittifak etkinlikleri için en iyi zamanları planlamamıza yardımcı olun.",
+    "inGameName": "Oyundaki İsim",
+    "timeZone": "Saat Dilimi",
+    "availableTimes": "Müsait Zamanlar",
+    "submit": "Gönder",
+    "submitSuccess": "Anket başarıyla gönderildi!",
+    "submitError": "Anket gönderilirken hata oluştu. Lütfen tekrar deneyin."
+  }
+}

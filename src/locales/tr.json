@@ -1,0 +1,48 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs İttifak Anketi",
+    "subtitle": "Müsait olduğunuz zamanları paylaşarak ittifak etkinlikleri için en iyi zamanları planlamamıza yardımcı olun",
+    "inGameName": "Oyundaki İsim (İsteğe Bağlı)",
+    "timeZone": "Saat Diliminiz",
+    "availableTimes": "Müsait Zaman Dilimleri (Uygulanan tüm zamanları seçin)",
+    "selectTime": "Zaman Seç",
+    "addTime": "Zaman Ekle",
+    "submit": "Anketi Gönder",
+    "submitSuccess": "Anket başarıyla gönderildi!",
+    "submitError": "Anket gönderilemedi. Lütfen tekrar deneyin.",
+    "timeZones": {
+      "local": "Yerel Saatiniz",
+      "cities": {
+        "baker_island": "Baker Adası, Howland Adası",
+        "samoa": "Samoa, Amerikan Samoası",
+        "hawaii": "Hawaii, Tahiti",
+        "alaska": "Alaska, Anchorage",
+        "los_angeles": "Los Angeles, Vancouver",
+        "denver": "Denver, Phoenix",
+        "chicago": "Chicago, Meksiko",
+        "new_york": "New York, Toronto",
+        "caracas": "Caracas, Santiago",
+        "sao_paulo": "São Paulo, Buenos Aires",
+        "fernando": "Fernando de Noronha, Güney Georgia",
+        "cape_verde": "Cape Verde, Azorlar",
+        "london": "Londra, Lizbon",
+        "paris": "Paris, Berlin",
+        "cairo": "Kahire, Atina",
+        "moscow": "Moskova, İstanbul",
+        "dubai": "Dubai, Bakü",
+        "karachi": "Karaçi, Taşkent",
+        "new_delhi": "Yeni Delhi, Kolombo",
+        "dhaka": "Dakka, Almatı",
+        "bangkok": "Bangkok, Cakarta",
+        "beijing": "Pekin, Singapur",
+        "tokyo": "Tokyo, Seul",
+        "adelaide": "Adelaide, Darwin",
+        "sydney": "Sidney, Melbourne",
+        "solomon": "Solomon Adaları, Vanuatu",
+        "auckland": "Auckland, Fiji",
+        "samoa_tonga": "Samoa, Tonga",
+        "line_islands": "Line Adaları"
+      }
+    }
+  }
+}

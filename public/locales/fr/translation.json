@@ -1,0 +1,12 @@
+{
+  "allianceSurvey": {
+    "title": "Sondage Alliance 0Gs",
+    "subtitle": "Aidez-nous à planifier les meilleurs horaires pour les événements de l'alliance en partageant vos disponibilités.",
+    "inGameName": "Nom dans le jeu",
+    "timeZone": "Fuseau horaire",
+    "availableTimes": "Horaires disponibles",
+    "submit": "Soumettre",
+    "submitSuccess": "Sondage envoyé avec succès !",
+    "submitError": "Erreur lors de l'envoi du sondage. Veuillez réessayer."
+  }
+}

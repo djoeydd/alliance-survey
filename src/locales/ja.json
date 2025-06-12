@@ -1,0 +1,48 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs同盟アンケート",
+    "subtitle": "利用可能な時間を共有して、同盟イベントの最適な時間を計画するのに役立ててください",
+    "inGameName": "ゲーム内の名前（任意）",
+    "timeZone": "タイムゾーン",
+    "availableTimes": "利用可能な時間帯（複数選択可）",
+    "selectTime": "時間を選択",
+    "addTime": "時間を追加",
+    "submit": "アンケートを送信",
+    "submitSuccess": "アンケートが正常に送信されました！",
+    "submitError": "アンケートの送信に失敗しました。もう一度お試しください。",
+    "timeZones": {
+      "local": "現地時間",
+      "cities": {
+        "baker_island": "ベーカー島、ハウランド島",
+        "samoa": "サモア、アメリカ領サモア",
+        "hawaii": "ハワイ、タヒチ",
+        "alaska": "アラスカ、アンカレッジ",
+        "los_angeles": "ロサンゼルス、バンクーバー",
+        "denver": "デンバー、フェニックス",
+        "chicago": "シカゴ、メキシコシティ",
+        "new_york": "ニューヨーク、トロント",
+        "caracas": "カラカス、サンティアゴ",
+        "sao_paulo": "サンパウロ、ブエノスアイレス",
+        "fernando": "フェルナンド・デ・ノローニャ、サウスジョージア",
+        "cape_verde": "カーボベルデ、アゾレス諸島",
+        "london": "ロンドン、リスボン",
+        "paris": "パリ、ベルリン",
+        "cairo": "カイロ、アテネ",
+        "moscow": "モスクワ、イスタンブール",
+        "dubai": "ドバイ、バクー",
+        "karachi": "カラチ、タシュケント",
+        "new_delhi": "ニューデリー、コロンボ",
+        "dhaka": "ダッカ、アルマトイ",
+        "bangkok": "バンコク、ジャカルタ",
+        "beijing": "北京、シンガポール",
+        "tokyo": "東京、ソウル",
+        "adelaide": "アデレード、ダーウィン",
+        "sydney": "シドニー、メルボルン",
+        "solomon": "ソロモン諸島、バヌアツ",
+        "auckland": "オークランド、フィジー",
+        "samoa_tonga": "サモア、トンガ",
+        "line_islands": "ライン諸島"
+      }
+    }
+  }
+}

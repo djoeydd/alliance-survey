@@ -1,0 +1,12 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs アライアンス調査",
+    "subtitle": "あなたの利用可能時間を共有して、アライアンスイベントの最適な時間を決めるのを手伝ってください。",
+    "inGameName": "ゲーム内の名前",
+    "timeZone": "タイムゾーン",
+    "availableTimes": "利用可能時間",
+    "submit": "送信",
+    "submitSuccess": "調査が正常に送信されました！",
+    "submitError": "調査の送信中にエラーが発生しました。もう一度お試しください。"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs联盟调查",
+    "subtitle": "通过分享您的可用时间，帮助我们安排联盟活动的最佳时间",
+    "inGameName": "游戏内名称（可选）",
+    "timeZone": "您的时区",
+    "availableTimes": "可用时间段（可多选）",
+    "selectTime": "选择时间",
+    "addTime": "添加时间",
+    "submit": "提交调查",
+    "submitSuccess": "调查提交成功！",
+    "submitError": "提交调查失败。请重试。",
+    "timeZones": {
+      "local": "您的本地时间",
+      "cities": {
+        "baker_island": "贝克岛、豪兰岛",
+        "samoa": "萨摩亚、美属萨摩亚",
+        "hawaii": "夏威夷、塔希提",
+        "alaska": "阿拉斯加、安克雷奇",
+        "los_angeles": "洛杉矶、温哥华",
+        "denver": "丹佛、凤凰城",
+        "chicago": "芝加哥、墨西哥城",
+        "new_york": "纽约、多伦多",
+        "caracas": "加拉加斯、圣地亚哥",
+        "sao_paulo": "圣保罗、布宜诺斯艾利斯",
+        "fernando": "费尔南多-迪诺罗尼亚、南乔治亚",
+        "cape_verde": "佛得角、亚速尔群岛",
+        "london": "伦敦、里斯本",
+        "paris": "巴黎、柏林",
+        "cairo": "开罗、雅典",
+        "moscow": "莫斯科、伊斯坦布尔",
+        "dubai": "迪拜、巴库",
+        "karachi": "卡拉奇、塔什干",
+        "new_delhi": "新德里、科伦坡",
+        "dhaka": "达卡、阿拉木图",
+        "bangkok": "曼谷、雅加达",
+        "beijing": "北京、新加坡",
+        "tokyo": "东京、首尔",
+        "adelaide": "阿德莱德、达尔文",
+        "sydney": "悉尼、墨尔本",
+        "solomon": "所罗门群岛、瓦努阿图",
+        "auckland": "奥克兰、斐济",
+        "samoa_tonga": "萨摩亚、汤加",
+        "line_islands": "莱恩群岛"
+      }
+    }
+  }
+}

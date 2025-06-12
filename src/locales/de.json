@@ -1,0 +1,48 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs Allianz-Umfrage",
+    "subtitle": "Helfen Sie uns, die besten Zeiten für Allianz-Events zu planen, indem Sie Ihre Verfügbarkeit teilen",
+    "inGameName": "Spielername (Optional)",
+    "timeZone": "Ihre Zeitzone",
+    "availableTimes": "Verfügbare Zeitslots (Mehrfachauswahl möglich)",
+    "selectTime": "Zeit auswählen",
+    "addTime": "Zeit hinzufügen",
+    "submit": "Umfrage absenden",
+    "submitSuccess": "Umfrage erfolgreich abgesendet!",
+    "submitError": "Umfrage konnte nicht abgesendet werden. Bitte versuchen Sie es erneut.",
+    "timeZones": {
+      "local": "Ihre Ortszeit",
+      "cities": {
+        "baker_island": "Baker Island, Howland Island",
+        "samoa": "Samoa, Amerikanisch-Samoa",
+        "hawaii": "Hawaii, Tahiti",
+        "alaska": "Alaska, Anchorage",
+        "los_angeles": "Los Angeles, Vancouver",
+        "denver": "Denver, Phoenix",
+        "chicago": "Chicago, Mexiko-Stadt",
+        "new_york": "New York, Toronto",
+        "caracas": "Caracas, Santiago",
+        "sao_paulo": "São Paulo, Buenos Aires",
+        "fernando": "Fernando de Noronha, Südgeorgien",
+        "cape_verde": "Kap Verde, Azoren",
+        "london": "London, Lissabon",
+        "paris": "Paris, Berlin",
+        "cairo": "Kairo, Athen",
+        "moscow": "Moskau, Istanbul",
+        "dubai": "Dubai, Baku",
+        "karachi": "Karatschi, Taschkent",
+        "new_delhi": "Neu-Delhi, Colombo",
+        "dhaka": "Dhaka, Almaty",
+        "bangkok": "Bangkok, Jakarta",
+        "beijing": "Peking, Singapur",
+        "tokyo": "Tokio, Seoul",
+        "adelaide": "Adelaide, Darwin",
+        "sydney": "Sydney, Melbourne",
+        "solomon": "Salomonen, Vanuatu",
+        "auckland": "Auckland, Fidschi",
+        "samoa_tonga": "Samoa, Tonga",
+        "line_islands": "Linieninseln"
+      }
+    }
+  }
+}

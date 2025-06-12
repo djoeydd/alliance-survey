@@ -1,0 +1,12 @@
+{
+  "allianceSurvey": {
+    "title": "Pesquisa da Aliança 0Gs",
+    "subtitle": "Ajude-nos a agendar os melhores horários para os eventos da aliança compartilhando sua disponibilidade.",
+    "inGameName": "Nome no Jogo",
+    "timeZone": "Fuso Horário",
+    "availableTimes": "Horários Disponíveis",
+    "submit": "Enviar",
+    "submitSuccess": "Pesquisa enviada com sucesso!",
+    "submitError": "Erro ao enviar a pesquisa. Por favor, tente novamente."
+  }
+}

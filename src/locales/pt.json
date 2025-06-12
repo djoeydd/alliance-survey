@@ -1,0 +1,48 @@
+{
+  "allianceSurvey": {
+    "title": "Pesquisa da Aliança 0Gs",
+    "subtitle": "Ajude-nos a planejar os melhores horários para eventos da aliança compartilhando sua disponibilidade",
+    "inGameName": "Nome no Jogo (Opcional)",
+    "timeZone": "Seu Fuso Horário",
+    "availableTimes": "Horários Disponíveis (Selecione todos que se aplicam)",
+    "selectTime": "Selecionar Horário",
+    "addTime": "Adicionar Horário",
+    "submit": "Enviar Pesquisa",
+    "submitSuccess": "Pesquisa enviada com sucesso!",
+    "submitError": "Falha ao enviar pesquisa. Por favor, tente novamente.",
+    "timeZones": {
+      "local": "Seu Horário Local",
+      "cities": {
+        "baker_island": "Ilha Baker, Ilha Howland",
+        "samoa": "Samoa, Samoa Americana",
+        "hawaii": "Havaí, Taiti",
+        "alaska": "Alasca, Anchorage",
+        "los_angeles": "Los Angeles, Vancouver",
+        "denver": "Denver, Phoenix",
+        "chicago": "Chicago, Cidade do México",
+        "new_york": "Nova York, Toronto",
+        "caracas": "Caracas, Santiago",
+        "sao_paulo": "São Paulo, Buenos Aires",
+        "fernando": "Fernando de Noronha, Geórgia do Sul",
+        "cape_verde": "Cabo Verde, Açores",
+        "london": "Londres, Lisboa",
+        "paris": "Paris, Berlim",
+        "cairo": "Cairo, Atenas",
+        "moscow": "Moscou, Istambul",
+        "dubai": "Dubai, Baku",
+        "karachi": "Carachi, Tashkent",
+        "new_delhi": "Nova Delhi, Colombo",
+        "dhaka": "Daca, Almaty",
+        "bangkok": "Bangkok, Jacarta",
+        "beijing": "Pequim, Singapura",
+        "tokyo": "Tóquio, Seul",
+        "adelaide": "Adelaide, Darwin",
+        "sydney": "Sydney, Melbourne",
+        "solomon": "Ilhas Salomão, Vanuatu",
+        "auckland": "Auckland, Fiji",
+        "samoa_tonga": "Samoa, Tonga",
+        "line_islands": "Ilhas Line"
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs Alliantie Enquête",
+    "subtitle": "Help ons de beste tijden voor alliantie-evenementen te plannen door je beschikbaarheid te delen.",
+    "inGameName": "Spelnaam",
+    "timeZone": "Tijdzone",
+    "availableTimes": "Beschikbare Tijden",
+    "submit": "Versturen",
+    "submitSuccess": "Enquête succesvol verzonden!",
+    "submitError": "Fout bij het verzenden van de enquête. Probeer het opnieuw."
+  }
+}

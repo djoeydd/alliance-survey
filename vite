@@ -1,0 +1,166 @@
+
+
+  VITE v6.3.5  ready in 207 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+2:22:24 PM [vite] Internal server error: Failed to resolve import "./i18n/
+2:22:24 PM [vite] Internal server error: Failed to resolve import "./i18n/config" from "src/main.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/joey/alliance-survey/src/main.tsx:4:7
+  3  |  import ReactDOM from "react-dom/client";
+  4  |  import App from "./App.tsx";
+  5  |  import "./i18n/config";
+     |          ^
+  6  |  import "@fontsource/poppins/300.css";
+  7  |  import "@fontsource/poppins/400.css";
+      at TransformPluginContext._formatLog (file:///Users/joey/alliance-su
+      at TransformPluginContext._formatLog (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42499:41)
+      at TransformPluginContext.error (file:///Users/joey/alliance-survey/
+      at TransformPluginContext.error (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42496:16)
+      at normalizeUrl (file:///Users/joey/alliance-survey/node_modules/vit
+      at normalizeUrl (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40475:23)
+      at process.processTicksAndRejections (node:internal/process/task_que
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/joey/alliance-survey/node_modules/vite/dist/n
+      at async file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40594:37
+      at async Promise.all (index 4)
+      at async TransformPluginContext.transform (file:///Users/joey/allian
+      at async TransformPluginContext.transform (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40521:7)
+      at async EnvironmentPluginContainer.transform (file:///Users/joey/al
+      at async EnvironmentPluginContainer.transform (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+      at async loadAndTransform (file:///Users/joey/alliance-survey/node_m
+      at async loadAndTransform (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:35735:27)
+2:22:24 PM [vite] Pre-transform error: Failed to resolve import "./i18n/co
+2:22:24 PM [vite] Pre-transform error: Failed to resolve import "./i18n/config" from "src/main.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/joey/alliance-survey/src/main.tsx:4:7
+  3  |  import ReactDOM from "react-dom/client";
+  4  |  import App from "./App.tsx";
+  5  |  import "./i18n/config";
+     |          ^
+  6  |  import "@fontsource/poppins/300.css";
+  7  |  import "@fontsource/poppins/400.css";
+2:23:09 PM [vite] .env changed, restarting server...
+2:23:09 PM [vite] server restarted.
+2:23:09 PM [vite] Internal server error: Failed to resolve import "./i18n/
+2:23:09 PM [vite] Internal server error: Failed to resolve import "./i18n/config" from "src/main.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/joey/alliance-survey/src/main.tsx:4:7
+  3  |  import ReactDOM from "react-dom/client";
+  4  |  import App from "./App.tsx";
+  5  |  import "./i18n/config";
+     |          ^
+  6  |  import "@fontsource/poppins/300.css";
+  7  |  import "@fontsource/poppins/400.css";
+      at TransformPluginContext._formatLog (file:///Users/joey/alliance-su
+      at TransformPluginContext._formatLog (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42499:41)
+      at TransformPluginContext.error (file:///Users/joey/alliance-survey/
+      at TransformPluginContext.error (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42496:16)
+      at normalizeUrl (file:///Users/joey/alliance-survey/node_modules/vit
+      at normalizeUrl (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40475:23)
+      at process.processTicksAndRejections (node:internal/process/task_que
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/joey/alliance-survey/node_modules/vite/dist/n
+      at async file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40594:37
+      at async Promise.all (index 4)
+      at async TransformPluginContext.transform (file:///Users/joey/allian
+      at async TransformPluginContext.transform (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40521:7)
+      at async EnvironmentPluginContainer.transform (file:///Users/joey/al
+      at async EnvironmentPluginContainer.transform (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+      at async loadAndTransform (file:///Users/joey/alliance-survey/node_m
+      at async loadAndTransform (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:35735:27)
+2:23:09 PM [vite] Pre-transform error: Failed to resolve import "./i18n/co
+2:23:09 PM [vite] Pre-transform error: Failed to resolve import "./i18n/config" from "src/main.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/joey/alliance-survey/src/main.tsx:4:7
+  3  |  import ReactDOM from "react-dom/client";
+  4  |  import App from "./App.tsx";
+  5  |  import "./i18n/config";
+     |          ^
+  6  |  import "@fontsource/poppins/300.css";
+  7  |  import "@fontsource/poppins/400.css";
+2:23:52 PM [vite] vite.config.ts changed, restarting server...
+2:23:52 PM [vite] (client) Re-optimizing dependencies because vite config 
+2:23:52 PM [vite] (client) Re-optimizing dependencies because vite config has changed
+2:23:52 PM [vite] server restarted.
+2:23:53 PM [vite] Internal server error: Failed to resolve import "./i18n/
+2:23:53 PM [vite] Internal server error: Failed to resolve import "./i18n/config" from "src/main.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/joey/alliance-survey/src/main.tsx:4:7
+  3  |  import ReactDOM from "react-dom/client";
+  4  |  import App from "./App.tsx";
+  5  |  import "./i18n/config";
+     |          ^
+  6  |  import "@fontsource/poppins/300.css";
+  7  |  import "@fontsource/poppins/400.css";
+      at TransformPluginContext._formatLog (file:///Users/joey/alliance-su
+      at TransformPluginContext._formatLog (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42499:41)
+      at TransformPluginContext.error (file:///Users/joey/alliance-survey/
+      at TransformPluginContext.error (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42496:16)
+      at normalizeUrl (file:///Users/joey/alliance-survey/node_modules/vit
+      at normalizeUrl (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40475:23)
+      at process.processTicksAndRejections (node:internal/process/task_que
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/joey/alliance-survey/node_modules/vite/dist/n
+      at async file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40594:37
+      at async Promise.all (index 4)
+      at async TransformPluginContext.transform (file:///Users/joey/allian
+      at async TransformPluginContext.transform (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40521:7)
+      at async EnvironmentPluginContainer.transform (file:///Users/joey/al
+      at async EnvironmentPluginContainer.transform (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+      at async loadAndTransform (file:///Users/joey/alliance-survey/node_m
+      at async loadAndTransform (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:35735:27)
+2:23:53 PM [vite] Pre-transform error: Failed to resolve import "./i18n/co
+2:23:53 PM [vite] Pre-transform error: Failed to resolve import "./i18n/config" from "src/main.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/joey/alliance-survey/src/main.tsx:4:7
+  3  |  import ReactDOM from "react-dom/client";
+  4  |  import App from "./App.tsx";
+  5  |  import "./i18n/config";
+     |          ^
+  6  |  import "@fontsource/poppins/300.css";
+  7  |  import "@fontsource/poppins/400.css";
+2:24:00 PM [vite] (client) page reload src/services/googleAuth.ts
+2:24:00 PM [vite] Pre-transform error: Failed to resolve import "./i18n/co
+2:24:00 PM [vite] Pre-transform error: Failed to resolve import "./i18n/config" from "src/main.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/joey/alliance-survey/src/main.tsx:4:7
+  3  |  import ReactDOM from "react-dom/client";
+  4  |  import App from "./App.tsx";
+  5  |  import "./i18n/config";
+     |          ^
+  6  |  import "@fontsource/poppins/300.css";
+  7  |  import "@fontsource/poppins/400.css";
+2:24:00 PM [vite] Internal server error: Failed to resolve import "./i18n/
+2:24:00 PM [vite] Internal server error: Failed to resolve import "./i18n/config" from "src/main.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/joey/alliance-survey/src/main.tsx:4:7
+  3  |  import ReactDOM from "react-dom/client";
+  4  |  import App from "./App.tsx";
+  5  |  import "./i18n/config";
+     |          ^
+  6  |  import "@fontsource/poppins/300.css";
+  7  |  import "@fontsource/poppins/400.css";
+      at TransformPluginContext._formatLog (file:///Users/joey/alliance-su
+      at TransformPluginContext._formatLog (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42499:41)
+      at TransformPluginContext.error (file:///Users/joey/alliance-survey/
+      at TransformPluginContext.error (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42496:16)
+      at normalizeUrl (file:///Users/joey/alliance-survey/node_modules/vit
+      at normalizeUrl (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40475:23)
+      at process.processTicksAndRejections (node:internal/process/task_que
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/joey/alliance-survey/node_modules/vite/dist/n
+      at async file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40594:37
+      at async Promise.all (index 4)
+      at async TransformPluginContext.transform (file:///Users/joey/allian
+      at async TransformPluginContext.transform (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40521:7)
+      at async EnvironmentPluginContainer.transform (file:///Users/joey/al
+      at async EnvironmentPluginContainer.transform (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+      at async loadAndTransform (file:///Users/joey/alliance-survey/node_m
+      at async loadAndTransform (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:35735:27)
+      at async viteTransformMiddleware (file:///Users/joey/alliance-survey
+      at async viteTransformMiddleware (file:///Users/joey/alliance-survey/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:37250:24)
+2:25:10 PM [vite] (client) page reload src/i18n/config.ts
+^Cnpm run dev

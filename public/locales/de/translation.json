@@ -1,0 +1,12 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs Allianz-Umfrage",
+    "subtitle": "Helfen Sie uns, die besten Zeiten für Allianz-Events zu planen, indem Sie Ihre Verfügbarkeit mitteilen.",
+    "inGameName": "Spielname",
+    "timeZone": "Zeitzone",
+    "availableTimes": "Verfügbare Zeiten",
+    "submit": "Absenden",
+    "submitSuccess": "Umfrage erfolgreich gesendet!",
+    "submitError": "Fehler beim Senden der Umfrage. Bitte versuchen Sie es erneut."
+  }
+}

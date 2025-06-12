@@ -1,0 +1,48 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs Alliance Survey",
+    "subtitle": "Help us schedule the best times for alliance events by sharing your availability",
+    "inGameName": "In-Game Name (Optional)",
+    "timeZone": "Your Time Zone",
+    "availableTimes": "Available Time Slots (Select all that apply)",
+    "selectTime": "Select Time",
+    "addTime": "Add Time",
+    "submit": "Submit Survey",
+    "submitSuccess": "Survey submitted successfully!",
+    "submitError": "Failed to submit survey. Please try again.",
+    "timeZones": {
+      "local": "Your Local Time",
+      "cities": {
+        "baker_island": "Baker Island, Howland Island",
+        "samoa": "Samoa, American Samoa",
+        "hawaii": "Hawaii, Tahiti",
+        "alaska": "Alaska, Anchorage",
+        "los_angeles": "Los Angeles, Vancouver",
+        "denver": "Denver, Phoenix",
+        "chicago": "Chicago, Mexico City",
+        "new_york": "New York, Toronto",
+        "caracas": "Caracas, Santiago",
+        "sao_paulo": "São Paulo, Buenos Aires",
+        "fernando": "Fernando de Noronha, South Georgia",
+        "cape_verde": "Cape Verde, Azores",
+        "london": "London, Lisbon",
+        "paris": "Paris, Berlin",
+        "cairo": "Cairo, Athens",
+        "moscow": "Moscow, Istanbul",
+        "dubai": "Dubai, Baku",
+        "karachi": "Karachi, Tashkent",
+        "new_delhi": "New Delhi, Colombo",
+        "dhaka": "Dhaka, Almaty",
+        "bangkok": "Bangkok, Jakarta",
+        "beijing": "Beijing, Singapore",
+        "tokyo": "Tokyo, Seoul",
+        "adelaide": "Adelaide, Darwin",
+        "sydney": "Sydney, Melbourne",
+        "solomon": "Solomon Islands, Vanuatu",
+        "auckland": "Auckland, Fiji",
+        "samoa_tonga": "Samoa, Tonga",
+        "line_islands": "Line Islands"
+      }
+    }
+  }
+}

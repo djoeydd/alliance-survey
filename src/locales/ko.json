@@ -1,0 +1,48 @@
+{
+  "allianceSurvey": {
+    "title": "0Gs 연맹 설문조사",
+    "subtitle": "가능한 시간을 공유하여 연맹 이벤트의 최적의 시간을 계획하는 데 도움을 주세요",
+    "inGameName": "게임 내 이름 (선택사항)",
+    "timeZone": "귀하의 시간대",
+    "availableTimes": "가능한 시간대 (해당되는 모든 시간 선택)",
+    "selectTime": "시간 선택",
+    "addTime": "시간 추가",
+    "submit": "설문 제출",
+    "submitSuccess": "설문이 성공적으로 제출되었습니다!",
+    "submitError": "설문 제출에 실패했습니다. 다시 시도해 주세요.",
+    "timeZones": {
+      "local": "귀하의 현지 시간",
+      "cities": {
+        "baker_island": "베이커 섬, 하울랜드 섬",
+        "samoa": "사모아, 미국령 사모아",
+        "hawaii": "하와이, 타히티",
+        "alaska": "알래스카, 앵커리지",
+        "los_angeles": "로스앤젤레스, 밴쿠버",
+        "denver": "덴버, 피닉스",
+        "chicago": "시카고, 멕시코시티",
+        "new_york": "뉴욕, 토론토",
+        "caracas": "카라카스, 산티아고",
+        "sao_paulo": "상파울루, 부에노스아이레스",
+        "fernando": "페르난두 데 노로냐, 사우스조지아",
+        "cape_verde": "카보베르데, 아조레스",
+        "london": "런던, 리스본",
+        "paris": "파리, 베를린",
+        "cairo": "카이로, 아테네",
+        "moscow": "모스크바, 이스탄불",
+        "dubai": "두바이, 바쿠",
+        "karachi": "카라치, 타슈켄트",
+        "new_delhi": "뉴델리, 콜롬보",
+        "dhaka": "다카, 알마티",
+        "bangkok": "방콕, 자카르타",
+        "beijing": "베이징, 싱가포르",
+        "tokyo": "도쿄, 서울",
+        "adelaide": "애들레이드, 다윈",
+        "sydney": "시드니, 멜버른",
+        "solomon": "솔로몬 제도, 바누아투",
+        "auckland": "오클랜드, 피지",
+        "samoa_tonga": "사모아, 통가",
+        "line_islands": "라인 제도"
+      }
+    }
+  }
+}
