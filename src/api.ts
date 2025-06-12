@@ -21,3 +21,8 @@ export const getSurveyResponses = async () => {
   const response = await fetch(`${API_URL}/survey`);
   return response.json();
 };
+
+export const getAdminData = async () => {
+  const response = await fetch(`${API_URL}/admin`);
+  return response.json();
+};

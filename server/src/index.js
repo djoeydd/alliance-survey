@@ -54,6 +54,17 @@ app.get("/api/survey", async (req, res) => {
   }
 });
 
+// Admin endpoint
+app.get("/api/admin", async (req, res) => {
+  try {
+    const responses = await SurveyResponse.find().sort({ createdAt: -1 });
+    res.json(responses);
+  } catch (error) {
+    console.error("Error fetching admin data:", error);
+    res.status(500).json({ error: "Failed to fetch admin data" });
+  }
+});
+
 // Health check endpoint
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
