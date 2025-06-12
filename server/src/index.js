@@ -18,10 +18,16 @@ app.use(express.json());
 // MongoDB Connection
 const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost:27017/alliance-survey";
-mongoose
-  .connect(MONGODB_URI)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+
+// Connect to MongoDB
+const connectDB = async () => {
+  try {
+    await mongoose.connect(MONGODB_URI);
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.error("MongoDB connection error:", err);
+  }
+};
 
 // Survey Response Schema
 const surveyResponseSchema = new mongoose.Schema({
@@ -81,6 +87,9 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: "Something broke!" });
 });
+
+// Connect to MongoDB before starting the server
+connectDB();
 
 // Export the Express API
 module.exports = app;
