@@ -8,9 +8,10 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: "*",
+    origin: ["https://alliance-survey.vercel.app", "http://localhost:5173"],
+    credentials: true,
     methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
+    allowedHeaders: ["Content-Type", "Accept"],
   })
 );
 app.use(express.json());
