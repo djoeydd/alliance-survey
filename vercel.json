@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
   "builds": [
     {
       "src": "package.json",
@@ -19,8 +22,11 @@
       "dest": "server/src/index.js"
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/dist/$1"
+      "dest": "/index.html"
     }
   ]
 }
