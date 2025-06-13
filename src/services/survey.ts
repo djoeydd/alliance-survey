@@ -1,24 +1,13 @@
-interface SurveyResponse {
-  inGameName: string;
+import { submitSurvey, getSurveyResponses } from "../api";
+
+export const submitSurveyResponse = async (data: {
+  gameName: string;
   timeZone: string;
   timeRanges: string[];
-}
+}) => {
+  return submitSurvey(data);
+};
 
-export const submitSurvey = async (data: SurveyResponse): Promise<void> => {
-  try {
-    const response = await fetch("http://localhost:3001/api/survey", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to submit survey");
-    }
-  } catch (error) {
-    console.error("Error submitting survey:", error);
-    throw error;
-  }
+export const fetchSurveyResponses = async () => {
+  return getSurveyResponses();
 };
