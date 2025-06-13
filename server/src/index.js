@@ -1,12 +1,11 @@
-require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { sql } = require("@vercel/postgres");
+require("dotenv").config();
 
 const app = express();
-const port = process.env.PORT || 3001;
 
-// Middleware
+// Enable CORS for all routes
 app.use(
   cors({
     origin: "*",
@@ -14,6 +13,8 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// Parse JSON bodies
 app.use(express.json());
 
 // Initialize database
@@ -32,7 +33,7 @@ async function initDatabase() {
     console.log("Database initialized successfully");
   } catch (error) {
     console.error("Database initialization error:", error);
-    throw error; // Re-throw to prevent server from starting with broken database
+    throw error;
   }
 }
 
@@ -84,7 +85,6 @@ app.get("/api/survey", async (req, res) => {
   }
 });
 
-// Admin endpoint
 app.get("/api/admin", async (req, res) => {
   try {
     const result =
@@ -99,7 +99,6 @@ app.get("/api/admin", async (req, res) => {
 // Health check endpoint
 app.get("/api/health", async (req, res) => {
   try {
-    // Test database connection
     await sql`SELECT 1`;
     res.json({ status: "ok", message: "Database connection is working" });
   } catch (error) {
@@ -115,25 +114,6 @@ app.use((err, req, res, next) => {
   console.error("Server error:", err);
   res.status(500).json({ error: "Internal server error" });
 });
-
-// Start server
-async function startServer() {
-  try {
-    await initDatabase();
-    dbInitialized = true;
-    app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-    });
-  } catch (error) {
-    console.error("Failed to start server:", error);
-    process.exit(1);
-  }
-}
-
-// For local development
-if (process.env.NODE_ENV !== "production") {
-  startServer();
-}
 
 // For Vercel serverless functions
 module.exports = app;
