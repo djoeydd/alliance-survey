@@ -23,9 +23,7 @@ export const submitSurvey = async (data: SurveyData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
       },
-      credentials: "same-origin",
       body: JSON.stringify(data),
     });
     return handleResponse(response);
@@ -37,12 +35,7 @@ export const submitSurvey = async (data: SurveyData) => {
 
 export const getSurveyResponses = async () => {
   try {
-    const response = await fetch(`${API_URL}/survey`, {
-      headers: {
-        "Accept": "application/json",
-      },
-      credentials: "same-origin",
-    });
+    const response = await fetch(`${API_URL}/survey`);
     return handleResponse(response);
   } catch (error) {
     console.error("Error fetching survey responses:", error);
@@ -52,12 +45,7 @@ export const getSurveyResponses = async () => {
 
 export const getAdminData = async () => {
   try {
-    const response = await fetch(`${API_URL}/admin`, {
-      headers: {
-        "Accept": "application/json",
-      },
-      credentials: "same-origin",
-    });
+    const response = await fetch(`${API_URL}/admin`);
     return handleResponse(response);
   } catch (error) {
     console.error("Error fetching admin data:", error);

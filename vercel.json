@@ -25,10 +25,9 @@
       "dest": "/server/src/index.js",
       "methods": ["GET", "POST", "OPTIONS"],
       "headers": {
-        "Access-Control-Allow-Origin": "https://alliance-survey.vercel.app",
-        "Access-Control-Allow-Headers": "Content-Type, Accept",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-        "Access-Control-Allow-Credentials": "true"
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS"
       }
     },
     {

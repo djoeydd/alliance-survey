@@ -1,166 +1,123 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { Pool } = require("pg");
+const { sql } = require("@vercel/postgres");
 
 const app = express();
+const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(
   cors({
-    origin: ["https://alliance-survey.vercel.app", "http://localhost:5173"],
-    credentials: true,
+    origin: "*",
     methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Accept"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(express.json());
 
-// Database connection
-const pool = new Pool({
-  connectionString: process.env.POSTGRES_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
 // Initialize database
-const initDatabase = async () => {
+async function initDatabase() {
   try {
     console.log("Initializing database...");
-    await pool.query(`
+    await sql`
       CREATE TABLE IF NOT EXISTS survey_responses (
         id SERIAL PRIMARY KEY,
-        in_game_name VARCHAR(255) NOT NULL,
-        time_zone VARCHAR(255) NOT NULL,
-        time_ranges TEXT[] NOT NULL,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
+        gameName VARCHAR(255) NOT NULL,
+        timeZone VARCHAR(255) NOT NULL,
+        timeRanges JSONB NOT NULL,
+        createdAt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
     console.log("Database initialized successfully");
   } catch (error) {
-    console.error("Error initializing database:", error);
+    console.error("Database initialization error:", error);
     throw error; // Re-throw to prevent server from starting with broken database
   }
-};
+}
 
 // API Routes
 app.post("/api/survey", async (req, res) => {
   try {
-    console.log("Received survey submission request");
     const { gameName, timeZone, timeRanges } = req.body;
-    console.log("Creating new survey response:", {
-      gameName,
-      timeZone,
-      timeRanges,
-    });
 
-    await pool.query(
-      "INSERT INTO survey_responses (in_game_name, time_zone, time_ranges) VALUES ($1, $2, $3)",
-      [gameName, timeZone, timeRanges]
-    );
+    if (!gameName || !timeZone || !timeRanges) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
 
-    console.log("Survey response saved successfully");
-    res.status(201).json({ message: "Survey response saved successfully" });
+    const result = await sql`
+      INSERT INTO survey_responses (gameName, timeZone, timeRanges)
+      VALUES (${gameName}, ${timeZone}, ${JSON.stringify(timeRanges)})
+      RETURNING *
+    `;
+
+    res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error("Error saving survey response:", error);
-    res
-      .status(500)
-      .json({ error: "Failed to save survey response: " + error.message });
+    res.status(500).json({ error: "Failed to save survey response" });
   }
 });
 
 app.get("/api/survey", async (req, res) => {
   try {
-    console.log("Fetching survey responses");
-    const result = await pool.query(
-      "SELECT * FROM survey_responses ORDER BY created_at DESC"
-    );
-
-    const responses = result.rows.map((row) => ({
-      id: row.id,
-      gameName: row.in_game_name,
-      timeZone: row.time_zone,
-      timeRanges: row.time_ranges,
-      createdAt: row.created_at,
-    }));
-
-    console.log(`Found ${responses.length} survey responses`);
-    res.json(responses);
+    const result =
+      await sql`SELECT * FROM survey_responses ORDER BY createdAt DESC`;
+    res.json(result.rows);
   } catch (error) {
     console.error("Error fetching survey responses:", error);
-    res
-      .status(500)
-      .json({ error: "Failed to fetch survey responses: " + error.message });
+    res.status(500).json({ error: "Failed to fetch survey responses" });
   }
 });
 
 // Admin endpoint
 app.get("/api/admin", async (req, res) => {
   try {
-    console.log("Fetching admin data");
-    const result = await pool.query(
-      "SELECT * FROM survey_responses ORDER BY created_at DESC"
-    );
-
-    const responses = result.rows.map((row) => ({
-      id: row.id,
-      gameName: row.in_game_name,
-      timeZone: row.time_zone,
-      timeRanges: row.time_ranges,
-      createdAt: row.created_at,
-    }));
-
-    console.log(`Found ${responses.length} responses for admin view`);
-    res.json(responses);
+    const result =
+      await sql`SELECT * FROM survey_responses ORDER BY createdAt DESC`;
+    res.json(result.rows);
   } catch (error) {
     console.error("Error fetching admin data:", error);
-    res
-      .status(500)
-      .json({ error: "Failed to fetch admin data: " + error.message });
+    res.status(500).json({ error: "Failed to fetch admin data" });
   }
 });
 
 // Health check endpoint
 app.get("/api/health", async (req, res) => {
   try {
-    console.log("Health check requested");
-    await pool.query("SELECT 1");
-    res.json({
-      status: "ok",
-      database: "connected",
-    });
+    // Test database connection
+    await sql`SELECT 1`;
+    res.json({ status: "ok", message: "Database connection is working" });
   } catch (error) {
     console.error("Health check failed:", error);
-    res.status(500).json({
-      status: "error",
-      error: error.message,
-      database: "disconnected",
-    });
+    res
+      .status(500)
+      .json({ status: "error", message: "Database connection failed" });
   }
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error("Unhandled error:", err.stack);
-  res.status(500).json({ error: "Something broke! " + err.message });
+  console.error("Server error:", err);
+  res.status(500).json({ error: "Internal server error" });
 });
 
-// Initialize database and start server
-const startServer = async () => {
+// Start server
+async function startServer() {
   try {
     await initDatabase();
-    const port = process.env.PORT || 3000;
     app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
+      console.log(`Server running on port ${port}`);
     });
   } catch (error) {
     console.error("Failed to start server:", error);
     process.exit(1);
   }
-};
+}
 
-startServer();
+// For local development
+if (process.env.NODE_ENV !== "production") {
+  startServer();
+}
 
-// Export the Express API
+// For Vercel serverless functions
 module.exports = app;
