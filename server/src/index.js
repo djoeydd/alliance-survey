@@ -36,6 +36,21 @@ async function initDatabase() {
   }
 }
 
+// Initialize database before setting up routes
+let dbInitialized = false;
+app.use(async (req, res, next) => {
+  if (!dbInitialized) {
+    try {
+      await initDatabase();
+      dbInitialized = true;
+    } catch (error) {
+      console.error("Failed to initialize database:", error);
+      return res.status(500).json({ error: "Database initialization failed" });
+    }
+  }
+  next();
+});
+
 // API Routes
 app.post("/api/survey", async (req, res) => {
   try {
@@ -105,6 +120,7 @@ app.use((err, req, res, next) => {
 async function startServer() {
   try {
     await initDatabase();
+    dbInitialized = true;
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });
