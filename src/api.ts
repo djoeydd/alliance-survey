@@ -4,25 +4,63 @@ interface SurveyData {
   timeRanges: string[];
 }
 
+// Use relative path for API calls
 const API_URL = "/api";
 
-export const submitSurvey = async (data: SurveyData) => {
-  const response = await fetch(`${API_URL}/survey`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+const handleResponse = async (response: Response) => {
+  if (!response.ok) {
+    const error = await response
+      .json()
+      .catch(() => ({ error: "Network response was not ok" }));
+    throw new Error(error.error || `HTTP error! status: ${response.status}`);
+  }
   return response.json();
+};
+
+export const submitSurvey = async (data: SurveyData) => {
+  try {
+    const response = await fetch(`${API_URL}/survey`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      credentials: "same-origin",
+      body: JSON.stringify(data),
+    });
+    return handleResponse(response);
+  } catch (error) {
+    console.error("Error submitting survey:", error);
+    throw error;
+  }
 };
 
 export const getSurveyResponses = async () => {
-  const response = await fetch(`${API_URL}/survey`);
-  return response.json();
+  try {
+    const response = await fetch(`${API_URL}/survey`, {
+      headers: {
+        "Accept": "application/json",
+      },
+      credentials: "same-origin",
+    });
+    return handleResponse(response);
+  } catch (error) {
+    console.error("Error fetching survey responses:", error);
+    throw error;
+  }
 };
 
 export const getAdminData = async () => {
-  const response = await fetch(`${API_URL}/admin`);
-  return response.json();
+  try {
+    const response = await fetch(`${API_URL}/admin`, {
+      headers: {
+        "Accept": "application/json",
+      },
+      credentials: "same-origin",
+    });
+    return handleResponse(response);
+  } catch (error) {
+    console.error("Error fetching admin data:", error);
+    throw error;
+  }
 };

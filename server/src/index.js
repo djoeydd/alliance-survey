@@ -27,6 +27,7 @@ const pool = new Pool({
 // Initialize database
 const initDatabase = async () => {
   try {
+    console.log("Initializing database...");
     await pool.query(`
       CREATE TABLE IF NOT EXISTS survey_responses (
         id SERIAL PRIMARY KEY,
@@ -39,6 +40,7 @@ const initDatabase = async () => {
     console.log("Database initialized successfully");
   } catch (error) {
     console.error("Error initializing database:", error);
+    throw error; // Re-throw to prevent server from starting with broken database
   }
 };
 
@@ -144,8 +146,21 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Something broke! " + err.message });
 });
 
-// Initialize database before starting
-initDatabase();
+// Initialize database and start server
+const startServer = async () => {
+  try {
+    await initDatabase();
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+};
+
+startServer();
 
 // Export the Express API
 module.exports = app;
