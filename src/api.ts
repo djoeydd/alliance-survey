@@ -4,8 +4,8 @@ interface SurveyData {
   timeRanges: string[];
 }
 
-// Use relative path for API calls
-const API_URL = "/api";
+// Use environment-aware API URL
+const API_URL = import.meta.env.DEV ? "http://localhost:3001/api" : "/api";
 
 const handleResponse = async (response: Response) => {
   if (!response.ok) {
