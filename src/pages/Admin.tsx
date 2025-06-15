@@ -24,7 +24,15 @@ interface SurveyResponse {
   id: number;
   gameName: string;
   timeZone: string;
-  timeRanges: string[];
+  timeRanges: string[] | null;
+  createdAt: string;
+}
+
+interface ApiResponse {
+  id: number;
+  gameName: string;
+  timeZone: string;
+  timeRanges: unknown;
   createdAt: string;
 }
 
@@ -38,7 +46,14 @@ export default function Admin() {
       setLoading(true);
       setError(null);
       const data = await getAdminData();
-      setResponses(data);
+      // Ensure timeRanges is always an array
+      const processedData = data.map((response: ApiResponse) => ({
+        ...response,
+        timeRanges: Array.isArray(response.timeRanges)
+          ? response.timeRanges
+          : [],
+      }));
+      setResponses(processedData);
     } catch (error) {
       console.error("Error fetching survey responses:", error);
       setError("Failed to load survey responses");
@@ -50,6 +65,11 @@ export default function Admin() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const formatTimeRanges = (timeRanges: string[] | null): string => {
+    if (!timeRanges || !Array.isArray(timeRanges)) return "No times selected";
+    return timeRanges.join(", ") || "No times selected";
+  };
 
   return (
     <Box
@@ -163,7 +183,7 @@ export default function Admin() {
                         {response.timeZone}
                       </TableCell>
                       <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                        {response.timeRanges.join(", ")}
+                        {formatTimeRanges(response.timeRanges)}
                       </TableCell>
                       <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
                         {new Date(response.createdAt).toLocaleString()}
