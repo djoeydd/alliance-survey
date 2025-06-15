@@ -1,5 +1,7 @@
 import { submitSurvey, getSurveyResponses } from "../api";
 
+export { submitSurvey };
+
 export const submitSurveyResponse = async (data: {
   gameName: string;
   timeZone: string;
