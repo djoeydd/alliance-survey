@@ -46,19 +46,44 @@ export default function Admin() {
       setLoading(true);
       setError(null);
       const data = await getAdminData();
+      console.log("Raw API response:", data);
+
       // Process timeRanges to extract only hour numbers
-      const processedData = data.map((response: ApiResponse) => ({
-        ...response,
-        timeRanges: Array.isArray(response.timeRanges)
-          ? response.timeRanges
-              .filter((time): time is string => typeof time === "string")
-              .map((time) => {
-                // Extract hour number from time string (e.g., "01:00" -> "1")
-                const hour = time.split(":")[0];
-                return hour.replace(/^0+/, ""); // Remove leading zeros
-              })
-          : [],
-      }));
+      const processedData = data.map((response: ApiResponse) => {
+        console.log("Processing response:", response);
+        let timeRanges: string[] = [];
+
+        try {
+          // Handle both string and array formats
+          if (typeof response.timeRanges === "string") {
+            timeRanges = JSON.parse(response.timeRanges);
+          } else if (Array.isArray(response.timeRanges)) {
+            timeRanges = response.timeRanges;
+          }
+
+          // Extract hour numbers and remove leading zeros
+          timeRanges = timeRanges
+            .filter((time): time is string => typeof time === "string")
+            .map((time) => {
+              console.log("Processing time:", time);
+              // Extract hour number from time string (e.g., "01:00" -> "1")
+              const hour = time.split(":")[0];
+              return hour.replace(/^0+/, ""); // Remove leading zeros
+            });
+        } catch (e) {
+          console.error("Error processing timeRanges:", e);
+          timeRanges = [];
+        }
+
+        const processed = {
+          ...response,
+          timeRanges,
+        };
+        console.log("Processed response:", processed);
+        return processed;
+      });
+
+      console.log("Final processed data:", processedData);
       setResponses(processedData);
     } catch (error) {
       console.error("Error fetching survey responses:", error);
@@ -74,8 +99,12 @@ export default function Admin() {
 
   const formatTimeRanges = (timeRanges: string[] | null): string => {
     try {
-      if (!timeRanges || !Array.isArray(timeRanges)) return "No times selected";
+      if (!timeRanges || !Array.isArray(timeRanges)) {
+        console.log("Invalid timeRanges:", timeRanges);
+        return "No times selected";
+      }
 
+      console.log("Formatting timeRanges:", timeRanges);
       // Sort hours numerically
       const sortedHours = timeRanges
         .filter((hour): hour is string => typeof hour === "string")
@@ -83,6 +112,7 @@ export default function Admin() {
         .sort((a, b) => a - b)
         .map((hour) => hour.toString());
 
+      console.log("Sorted hours:", sortedHours);
       return sortedHours.join(", ") || "No times selected";
     } catch (error) {
       console.error("Error formatting time ranges:", error);
@@ -92,9 +122,15 @@ export default function Admin() {
 
   const formatTimeZone = (timeZone: string): string => {
     try {
-      if (!timeZone) return "Unknown";
+      if (!timeZone) {
+        console.log("Empty timezone");
+        return "Unknown";
+      }
+      console.log("Formatting timezone:", timeZone);
       const parts = timeZone.split("_");
-      return parts[0] || timeZone;
+      const result = parts[0] || timeZone;
+      console.log("Formatted timezone:", result);
+      return result;
     } catch (error) {
       console.error("Error formatting timezone:", error);
       return timeZone || "Unknown";
@@ -198,31 +234,32 @@ export default function Admin() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {responses.map((response) => (
-                      <TableRow
-                        key={response.id}
-                        sx={{
-                          "&:hover": {
-                            backgroundColor: "rgba(255, 255, 255, 0.05)",
-                          },
-                        }}
-                      >
-                        <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                          {response.gameName || "Unnamed"}
-                        </TableCell>
-                        <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                          {formatTimeZone(response.timeZone)}
-                        </TableCell>
-                        <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                          {formatTimeRanges(response.timeRanges)}
-                        </TableCell>
-                        <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                          {response.createdAt
-                            ? new Date(response.createdAt).toLocaleString()
-                            : "Unknown"}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {responses.map((response) => {
+                      console.log("Rendering response:", response);
+                      return (
+                        <TableRow
+                          key={response.id}
+                          sx={{
+                            "&:hover": {
+                              backgroundColor: "rgba(255, 255, 255, 0.05)",
+                            },
+                          }}
+                        >
+                          <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+                            {response.gameName || "Unnamed"}
+                          </TableCell>
+                          <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+                            {formatTimeZone(response.timeZone)}
+                          </TableCell>
+                          <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+                            {formatTimeRanges(response.timeRanges)}
+                          </TableCell>
+                          <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+                            {new Date(response.createdAt).toLocaleString()}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </TableContainer>
