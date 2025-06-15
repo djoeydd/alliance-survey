@@ -1,6 +1,5 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import Backend from "i18next-http-backend";
 
 // Import all language files
 import en from "./locales/en.json";
@@ -22,32 +21,29 @@ declare module "*.json" {
   export default value;
 }
 
-i18n
-  .use(Backend)
-  .use(initReactI18next)
-  .init({
-    resources: {
-      en: { translation: en },
-      es: { translation: es },
-      pt: { translation: pt },
-      ja: { translation: ja },
-      zh: { translation: zh },
-      "zh-TW": { translation: zhTW },
-      tr: { translation: tr },
-      ko: { translation: ko },
-      fr: { translation: fr },
-      nl: { translation: nl },
-      de: { translation: de },
-      ar: { translation: ar },
-    },
-    lng: "en", // Set English as default
-    fallbackLng: "en",
-    interpolation: {
-      escapeValue: false,
-    },
-    react: {
-      useSuspense: false,
-    },
-  });
+i18n.use(initReactI18next).init({
+  resources: {
+    en: { translation: en },
+    es: { translation: es },
+    pt: { translation: pt },
+    ja: { translation: ja },
+    zh: { translation: zh },
+    "zh-TW": { translation: zhTW },
+    tr: { translation: tr },
+    ko: { translation: ko },
+    fr: { translation: fr },
+    nl: { translation: nl },
+    de: { translation: de },
+    ar: { translation: ar },
+  },
+  lng: "en",
+  fallbackLng: "en",
+  interpolation: {
+    escapeValue: false,
+  },
+  react: {
+    useSuspense: false,
+  },
+});
 
 export default i18n;

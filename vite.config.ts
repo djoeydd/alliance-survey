@@ -12,11 +12,20 @@ export default defineConfig({
         manualChunks: {
           vendor: ["react", "react-dom", "react-router-dom"],
           mui: ["@mui/material", "@mui/icons-material"],
+          i18n: ["i18next", "react-i18next", "i18next-http-backend"],
         },
       },
     },
   },
   server: {
     port: 3000,
+  },
+  resolve: {
+    alias: {
+      // Add any path aliases if needed
+    },
+  },
+  optimizeDeps: {
+    include: ["i18next", "react-i18next", "i18next-http-backend"],
   },
 });
