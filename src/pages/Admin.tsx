@@ -68,7 +68,16 @@ export default function Admin() {
 
   const formatTimeRanges = (timeRanges: string[] | null): string => {
     if (!timeRanges || !Array.isArray(timeRanges)) return "No times selected";
-    return timeRanges.join(", ") || "No times selected";
+    return (
+      timeRanges.map((time) => time.split(":")[0]).join(", ") ||
+      "No times selected"
+    );
+  };
+
+  const formatTimeZone = (timeZone: string): string => {
+    const parts = timeZone.split("_");
+    if (parts.length < 2) return timeZone;
+    return parts[0];
   };
 
   return (
@@ -148,51 +157,53 @@ export default function Admin() {
               {error}
             </Alert>
           ) : (
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
-                      Game Name
-                    </TableCell>
-                    <TableCell sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
-                      Time Zone
-                    </TableCell>
-                    <TableCell sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
-                      Available Times
-                    </TableCell>
-                    <TableCell sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
-                      Submitted
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {responses.map((response) => (
-                    <TableRow
-                      key={response.id}
-                      sx={{
-                        "&:hover": {
-                          backgroundColor: "rgba(255, 255, 255, 0.05)",
-                        },
-                      }}
-                    >
-                      <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                        {response.gameName}
+            <Box>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+                        Game Name
                       </TableCell>
-                      <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                        {response.timeZone}
+                      <TableCell sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+                        Time Zone
                       </TableCell>
-                      <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                        {formatTimeRanges(response.timeRanges)}
+                      <TableCell sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+                        Available Hours
                       </TableCell>
-                      <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                        {new Date(response.createdAt).toLocaleString()}
+                      <TableCell sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+                        Submitted
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                  </TableHead>
+                  <TableBody>
+                    {responses.map((response) => (
+                      <TableRow
+                        key={response.id}
+                        sx={{
+                          "&:hover": {
+                            backgroundColor: "rgba(255, 255, 255, 0.05)",
+                          },
+                        }}
+                      >
+                        <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+                          {response.gameName}
+                        </TableCell>
+                        <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+                          {formatTimeZone(response.timeZone)}
+                        </TableCell>
+                        <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+                          {formatTimeRanges(response.timeRanges)}
+                        </TableCell>
+                        <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+                          {new Date(response.createdAt).toLocaleString()}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
           )}
         </Paper>
       </Container>
