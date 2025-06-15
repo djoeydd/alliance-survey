@@ -13,6 +13,7 @@ export default defineConfig({
           vendor: ["react", "react-dom", "react-router-dom"],
           mui: ["@mui/material", "@mui/icons-material"],
           i18n: ["i18next", "react-i18next", "i18next-http-backend"],
+          date: ["date-fns", "date-fns-tz"],
         },
       },
     },
@@ -26,6 +27,15 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ["i18next", "react-i18next", "i18next-http-backend"],
+    include: [
+      "i18next",
+      "react-i18next",
+      "i18next-http-backend",
+      "date-fns",
+      "date-fns-tz",
+    ],
+    esbuildOptions: {
+      target: "es2020",
+    },
   },
 });
