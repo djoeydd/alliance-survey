@@ -91,9 +91,27 @@ app.get("/api/survey", async (req, res) => {
 
 app.get("/api/admin", async (req, res) => {
   try {
+    console.log("Fetching admin data...");
     const result =
       await sql`SELECT * FROM survey_responses ORDER BY createdAt DESC`;
-    res.json(result.rows);
+    console.log("Raw database response:", JSON.stringify(result.rows, null, 2));
+
+    // Process the data before sending
+    const processedData = result.rows.map((row) => {
+      console.log("Processing row:", JSON.stringify(row, null, 2));
+      return {
+        ...row,
+        timeRanges: Array.isArray(row.timeRanges)
+          ? row.timeRanges
+          : JSON.parse(row.timeRanges || "[]"),
+      };
+    });
+
+    console.log(
+      "Sending processed data:",
+      JSON.stringify(processedData, null, 2)
+    );
+    res.json(processedData);
   } catch (error) {
     console.error("Error fetching admin data:", error);
     res.status(500).json({ error: "Failed to fetch admin data" });

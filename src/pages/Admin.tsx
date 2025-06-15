@@ -45,20 +45,25 @@ export default function Admin() {
     try {
       setLoading(true);
       setError(null);
+      console.log("Fetching admin data...");
       const data = await getAdminData();
-      console.log("Raw API response:", data);
+      console.log("Raw API response:", JSON.stringify(data, null, 2));
 
       // Process timeRanges to extract only hour numbers
       const processedData = data.map((response: ApiResponse) => {
-        console.log("Processing response:", response);
+        console.log("Processing response:", JSON.stringify(response, null, 2));
         let timeRanges: string[] = [];
 
         try {
           // Handle both string and array formats
           if (typeof response.timeRanges === "string") {
+            console.log("Parsing timeRanges string:", response.timeRanges);
             timeRanges = JSON.parse(response.timeRanges);
           } else if (Array.isArray(response.timeRanges)) {
+            console.log("Using timeRanges array:", response.timeRanges);
             timeRanges = response.timeRanges;
+          } else {
+            console.log("Invalid timeRanges format:", response.timeRanges);
           }
 
           // Extract hour numbers and remove leading zeros
@@ -68,7 +73,9 @@ export default function Admin() {
               console.log("Processing time:", time);
               // Extract hour number from time string (e.g., "01:00" -> "1")
               const hour = time.split(":")[0];
-              return hour.replace(/^0+/, ""); // Remove leading zeros
+              const processedHour = hour.replace(/^0+/, ""); // Remove leading zeros
+              console.log(`Converted ${time} to ${processedHour}`);
+              return processedHour;
             });
         } catch (e) {
           console.error("Error processing timeRanges:", e);
@@ -79,11 +86,14 @@ export default function Admin() {
           ...response,
           timeRanges,
         };
-        console.log("Processed response:", processed);
+        console.log("Processed response:", JSON.stringify(processed, null, 2));
         return processed;
       });
 
-      console.log("Final processed data:", processedData);
+      console.log(
+        "Final processed data:",
+        JSON.stringify(processedData, null, 2)
+      );
       setResponses(processedData);
     } catch (error) {
       console.error("Error fetching survey responses:", error);

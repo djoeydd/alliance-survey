@@ -45,8 +45,12 @@ export const getSurveyResponses = async () => {
 
 export const getAdminData = async () => {
   try {
+    console.log("Making admin data request...");
     const response = await fetch(`${API_URL}/admin`);
-    return handleResponse(response);
+    console.log("Admin API response status:", response.status);
+    const data = await handleResponse(response);
+    console.log("Admin API response data:", JSON.stringify(data, null, 2));
+    return data;
   } catch (error) {
     console.error("Error fetching admin data:", error);
     throw error;
