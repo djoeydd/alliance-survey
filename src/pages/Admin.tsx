@@ -46,11 +46,17 @@ export default function Admin() {
       setLoading(true);
       setError(null);
       const data = await getAdminData();
-      // Ensure timeRanges is always an array
+      // Process timeRanges to extract only hour numbers
       const processedData = data.map((response: ApiResponse) => ({
         ...response,
         timeRanges: Array.isArray(response.timeRanges)
           ? response.timeRanges
+              .filter((time): time is string => typeof time === "string")
+              .map((time) => {
+                // Extract hour number from time string (e.g., "01:00" -> "1")
+                const hour = time.split(":")[0];
+                return hour.replace(/^0+/, ""); // Remove leading zeros
+              })
           : [],
       }));
       setResponses(processedData);
@@ -67,17 +73,32 @@ export default function Admin() {
   }, []);
 
   const formatTimeRanges = (timeRanges: string[] | null): string => {
-    if (!timeRanges || !Array.isArray(timeRanges)) return "No times selected";
-    return (
-      timeRanges.map((time) => time.split(":")[0]).join(", ") ||
-      "No times selected"
-    );
+    try {
+      if (!timeRanges || !Array.isArray(timeRanges)) return "No times selected";
+
+      // Sort hours numerically
+      const sortedHours = timeRanges
+        .filter((hour): hour is string => typeof hour === "string")
+        .map((hour) => parseInt(hour, 10))
+        .sort((a, b) => a - b)
+        .map((hour) => hour.toString());
+
+      return sortedHours.join(", ") || "No times selected";
+    } catch (error) {
+      console.error("Error formatting time ranges:", error);
+      return "Error formatting times";
+    }
   };
 
   const formatTimeZone = (timeZone: string): string => {
-    const parts = timeZone.split("_");
-    if (parts.length < 2) return timeZone;
-    return parts[0];
+    try {
+      if (!timeZone) return "Unknown";
+      const parts = timeZone.split("_");
+      return parts[0] || timeZone;
+    } catch (error) {
+      console.error("Error formatting timezone:", error);
+      return timeZone || "Unknown";
+    }
   };
 
   return (
@@ -187,7 +208,7 @@ export default function Admin() {
                         }}
                       >
                         <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                          {response.gameName}
+                          {response.gameName || "Unnamed"}
                         </TableCell>
                         <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
                           {formatTimeZone(response.timeZone)}
@@ -196,7 +217,9 @@ export default function Admin() {
                           {formatTimeRanges(response.timeRanges)}
                         </TableCell>
                         <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                          {new Date(response.createdAt).toLocaleString()}
+                          {response.createdAt
+                            ? new Date(response.createdAt).toLocaleString()
+                            : "Unknown"}
                         </TableCell>
                       </TableRow>
                     ))}
