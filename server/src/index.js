@@ -21,6 +21,10 @@ app.use(express.json());
 async function initDatabase() {
   try {
     console.log("Initializing database...");
+    // Drop the table if it exists to ensure clean state
+    await sql`DROP TABLE IF EXISTS survey_responses`;
+
+    // Create the table with correct column names
     await sql`
       CREATE TABLE IF NOT EXISTS survey_responses (
         id SERIAL PRIMARY KEY,
