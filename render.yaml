@@ -3,9 +3,7 @@ services:
     name: alliance-survey
     env: node
     buildCommand: npm install && npm run build
-    startCommand: npm start
+    startCommand: node server/src/index.js
     envVars:
       - key: NODE_ENV
         value: production
-      - key: MONGODB_URI
-        sync: false

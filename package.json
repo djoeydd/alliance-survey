@@ -17,6 +17,7 @@
     "@mui/material": "^5.15.10",
     "@mui/x-date-pickers": "^6.19.4",
     "@react-oauth/google": "^0.12.1",
+    "@types/recharts": "^1.8.29",
     "@vercel/postgres": "^0.7.2",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
@@ -25,7 +26,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^14.0.5",
-    "react-router-dom": "^6.22.1"
+    "react-router-dom": "^6.22.1",
+    "recharts": "^2.15.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",

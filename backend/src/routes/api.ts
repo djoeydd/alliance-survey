@@ -18,6 +18,7 @@ router.post("/survey", async (req, res) => {
       inGameName,
       timeZone,
       timeRanges,
+      createdAt: new Date(),
     });
 
     res.status(201).json({ message: "Survey response saved successfully" });

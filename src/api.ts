@@ -4,11 +4,8 @@ interface SurveyData {
   timeRanges: string[];
 }
 
-// Use environment-aware API URL
-const API_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:3001/api"
-    : "/api";
+// Always use relative path for API calls since we're deploying to Vercel
+const API_URL = "/api";
 
 const handleResponse = async (response: Response) => {
   if (!response.ok) {

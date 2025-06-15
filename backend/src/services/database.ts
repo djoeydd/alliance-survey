@@ -1,17 +1,18 @@
-import { MongoClient, Collection } from "mongodb";
-import { SurveyResponse } from "../types";
+import { sql } from "@vercel/postgres";
+
+export interface SurveyResponse {
+  id?: number;
+  inGameName: string;
+  timeZone: string;
+  timeRanges: string[];
+  createdAt: Date;
+}
 
 class DatabaseService {
   private static instance: DatabaseService;
-  private client: MongoClient;
-  private collection: Collection<SurveyResponse>;
 
   private constructor() {
-    const uri = process.env.MONGODB_URI || "mongodb://localhost:27017";
-    this.client = new MongoClient(uri);
-    this.collection = this.client
-      .db("alliance-survey")
-      .collection<SurveyResponse>("responses");
+    this.initDatabase();
   }
 
   public static getInstance(): DatabaseService {
@@ -21,78 +22,91 @@ class DatabaseService {
     return DatabaseService.instance;
   }
 
-  public async connect(): Promise<void> {
+  private async initDatabase() {
     try {
-      await this.client.connect();
-      console.log("Connected to MongoDB");
+      await sql`
+        CREATE TABLE IF NOT EXISTS survey_responses (
+          id SERIAL PRIMARY KEY,
+          in_game_name VARCHAR(255) NOT NULL,
+          time_zone VARCHAR(255) NOT NULL,
+          time_ranges TEXT[] NOT NULL,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+        );
+      `;
+      console.log("Database initialized successfully");
     } catch (error) {
-      console.error("Failed to connect to MongoDB:", error);
+      console.error("Error initializing database:", error);
+    }
+  }
+
+  async saveSurveyResponse(data: SurveyResponse): Promise<void> {
+    try {
+      await sql`
+        INSERT INTO survey_responses (in_game_name, time_zone, time_ranges)
+        VALUES (${data.inGameName}, ${data.timeZone}, ${JSON.stringify(
+        data.timeRanges
+      )})
+      `;
+    } catch (error) {
+      console.error("Error saving survey response:", error);
       throw error;
     }
   }
 
-  public async disconnect(): Promise<void> {
+  async getSurveyResponses(): Promise<SurveyResponse[]> {
     try {
-      await this.client.close();
-      console.log("Disconnected from MongoDB");
+      const result = await sql`
+        SELECT * FROM survey_responses
+        ORDER BY created_at DESC
+      `;
+
+      return result.rows.map((row) => ({
+        id: row.id,
+        inGameName: row.in_game_name,
+        timeZone: row.time_zone,
+        timeRanges: row.time_ranges,
+        createdAt: row.created_at,
+      }));
     } catch (error) {
-      console.error("Failed to disconnect from MongoDB:", error);
+      console.error("Error getting survey responses:", error);
       throw error;
     }
   }
 
-  public async saveSurveyResponse(response: SurveyResponse): Promise<void> {
+  async getTimeZoneStats(): Promise<{ timeZone: string; count: number }[]> {
     try {
-      await this.collection.insertOne(response);
+      const result = await sql`
+        SELECT time_zone, COUNT(*) as count
+        FROM survey_responses
+        GROUP BY time_zone
+        ORDER BY count DESC
+      `;
+
+      return result.rows.map((row) => ({
+        timeZone: row.time_zone,
+        count: parseInt(row.count),
+      }));
     } catch (error) {
-      console.error("Failed to save survey response:", error);
+      console.error("Error getting time zone stats:", error);
       throw error;
     }
   }
 
-  public async getSurveyResponses(): Promise<SurveyResponse[]> {
+  async getTimeRangeStats(): Promise<{ timeRange: string; count: number }[]> {
     try {
-      return await this.collection.find().toArray();
-    } catch (error) {
-      console.error("Failed to get survey responses:", error);
-      throw error;
-    }
-  }
+      const result = await sql`
+        SELECT unnest(time_ranges) as time_range, COUNT(*) as count
+        FROM survey_responses
+        GROUP BY time_range
+        ORDER BY count DESC
+      `;
 
-  public async getTimeZoneStats(): Promise<
-    { timeZone: string; count: number }[]
-  > {
-    try {
-      const stats = await this.collection
-        .aggregate([
-          { $group: { _id: "$timeZone", count: { $sum: 1 } } },
-          { $project: { timeZone: "$_id", count: 1, _id: 0 } },
-          { $sort: { count: -1 } },
-        ])
-        .toArray();
-      return stats as { timeZone: string; count: number }[];
+      return result.rows.map((row) => ({
+        timeRange: row.time_range,
+        count: parseInt(row.count),
+      }));
     } catch (error) {
-      console.error("Failed to get time zone stats:", error);
-      throw error;
-    }
-  }
-
-  public async getTimeRangeStats(): Promise<
-    { timeRange: string; count: number }[]
-  > {
-    try {
-      // Unwind the timeRanges array to tally each time slot separately
-      const stats = await this.collection
-        .aggregate([
-          { $unwind: "$timeRanges" },
-          { $group: { _id: "$timeRanges", count: { $sum: 1 } } },
-          { $project: { timeRange: "$_id", count: 1, _id: 0 } },
-          { $sort: { count: -1 } },
-        ])
-        .toArray();
-      return stats as { timeRange: string; count: number }[];
-    } catch (error) {
-      console.error("Failed to get time range stats:", error);
+      console.error("Error getting time range stats:", error);
       throw error;
     }
   }
