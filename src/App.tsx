@@ -23,6 +23,7 @@ import type { SelectChangeEvent } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { submitSurvey } from "./services/survey";
 import { theme } from "./theme";
+import { Link } from "react-router-dom";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -251,6 +252,22 @@ function App() {
                 >
                   {t("allianceSurvey.subtitle")}
                 </Typography>
+                <Button
+                  component={Link}
+                  to="/admin"
+                  variant="outlined"
+                  size="small"
+                  sx={{
+                    color: "rgba(255, 255, 255, 0.7)",
+                    borderColor: "rgba(255, 255, 255, 0.3)",
+                    "&:hover": {
+                      borderColor: "#ff4d4d",
+                      backgroundColor: "rgba(255, 77, 77, 0.1)",
+                    },
+                  }}
+                >
+                  Admin Panel
+                </Button>
               </Box>
 
               <Box component="form" sx={{ mt: 3 }}>
