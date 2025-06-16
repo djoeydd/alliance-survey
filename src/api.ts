@@ -58,33 +58,45 @@ export const getAdminData = async () => {
 };
 
 export const deleteResponse = async (id: number) => {
-  const response = await fetch(`${API_URL}/admin/responses/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    console.log(`Making delete request for response ${id}`);
+    const response = await fetch(`${API_URL}/admin/responses/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || "Failed to delete response");
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || "Failed to delete response");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error in deleteResponse:", error);
+    throw error;
   }
-
-  return response.json();
 };
 
 export const clearAllResponses = async () => {
-  const response = await fetch(`${API_URL}/admin/responses`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    console.log("Making clear all request");
+    const response = await fetch(`${API_URL}/admin/responses`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || "Failed to clear responses");
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || "Failed to clear responses");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error in clearAllResponses:", error);
+    throw error;
   }
-
-  return response.json();
 };
