@@ -71,51 +71,141 @@ export default function Admin() {
     useState<SurveyResponse | null>(null);
   const [clearAllDialogOpen, setClearAllDialogOpen] = useState(false);
 
-  const calculateTimeDistribution = (
-    responses: SurveyResponse[]
-  ): TimeDistribution[] => {
-    const hourCounts = new Array(24).fill(0);
+  const getTimezoneOffset = (timezone: string): number => {
+    // Extract GMT offset from timezone string (e.g., "GMT+8_beijing" -> 8)
+    const match = timezone.match(/GMT([+-]\d+)/);
+    if (match) {
+      const offset = parseInt(match[1], 10);
+      console.log(`Extracted offset ${offset} from timezone ${timezone}`);
+      return offset;
+    }
+    console.log(`No offset found in timezone ${timezone}, defaulting to 0`);
+    return 0; // Default to GMT+0 if no offset found
+  };
 
-    responses.forEach((response) => {
-      if (Array.isArray(response.timeRanges)) {
-        response.timeRanges.forEach((time) => {
-          const hour = parseInt(time, 10);
-          if (!isNaN(hour) && hour >= 0 && hour < 24) {
-            hourCounts[hour]++;
-          }
+  const convertToServerTime = (hour: string, timezone: string): string => {
+    try {
+      const hourNum = parseInt(hour, 10);
+      const offset = getTimezoneOffset(timezone);
+      console.log(
+        `Converting time: Local ${hour}:00 (${timezone}) to server time`
+      );
+      console.log(`Hour number: ${hourNum}, Offset: ${offset}`);
+
+      // Convert to server time (GMT+0)
+      // If local time is 11:00 in GMT+9, we need to subtract 9 hours to get server time
+      // Additional -2 hours adjustment needed
+      const serverHour = (hourNum - offset - 2 + 24) % 24;
+      console.log(
+        `Server time calculation: (${hourNum} - ${offset} - 2 + 24) % 24 = ${serverHour}`
+      );
+      return serverHour.toString();
+    } catch (error) {
+      console.error("Error converting time:", error);
+      return hour;
+    }
+  };
+
+  const calculateTimeDistribution = (data: SurveyResponse[]) => {
+    const hourCounts: { [key: string]: number } = {};
+
+    // Initialize all hours with 0
+    for (let i = 0; i < 24; i++) {
+      hourCounts[i.toString()] = 0;
+    }
+
+    // Count occurrences of each hour, converting to server time
+    data.forEach((response) => {
+      if (response.timeRanges) {
+        response.timeRanges.forEach((hour) => {
+          const serverHour = convertToServerTime(hour, response.timeZone);
+          console.log(`Adding count for server hour ${serverHour}:00`);
+          hourCounts[serverHour] = (hourCounts[serverHour] || 0) + 1;
         });
       }
     });
 
-    return hourCounts.map((count, hour) => ({
-      hour: hour.toString(),
-      count,
-    }));
+    // Convert to array and sort by hour
+    const distribution = Object.entries(hourCounts)
+      .map(([hour, count]) => ({
+        hour: `${hour}:00`,
+        count,
+      }))
+      .sort((a, b) => parseInt(a.hour) - parseInt(b.hour));
+
+    console.log("Final time distribution:", distribution);
+    return distribution;
   };
 
   const fetchData = async () => {
     try {
       setLoading(true);
-      const data: ApiResponse[] = await getAdminData();
+      setError(null);
+      console.log("Fetching admin data...");
+      const data = await getAdminData();
+      console.log("Raw API response:", JSON.stringify(data, null, 2));
 
-      // Process the data
-      const processedData = data.map((response) => ({
-        id: response.id,
-        gameName: response.gamename,
-        timeZone: response.timezone,
-        timeRanges: Array.isArray(response.timeranges)
-          ? response.timeranges
-          : JSON.parse(response.timeranges || "[]"),
-        createdAt: response.createdat,
-      }));
+      // Process timeRanges to extract only hour numbers
+      const processedData = data.map((response: ApiResponse) => {
+        console.log("Processing response:", JSON.stringify(response, null, 2));
+        let timeRanges: string[] = [];
 
+        try {
+          // Handle both string and array formats
+          const rawTimeRanges = response.timeranges;
+          if (typeof rawTimeRanges === "string") {
+            console.log("Parsing timeRanges string:", rawTimeRanges);
+            timeRanges = JSON.parse(rawTimeRanges);
+          } else if (Array.isArray(rawTimeRanges)) {
+            console.log("Using timeRanges array:", rawTimeRanges);
+            timeRanges = rawTimeRanges;
+          } else if (rawTimeRanges === null) {
+            console.log("timeRanges is null");
+            timeRanges = [];
+          } else {
+            console.log("Invalid timeRanges format:", rawTimeRanges);
+            timeRanges = [];
+          }
+
+          // Extract hour numbers and remove leading zeros
+          timeRanges = timeRanges
+            .filter((time): time is string => typeof time === "string")
+            .map((time) => {
+              console.log("Processing time:", time);
+              // Extract hour number from time string (e.g., "01:00" -> "1")
+              const hour = time.split(":")[0];
+              const processedHour = hour.replace(/^0+/, ""); // Remove leading zeros
+              console.log(`Converted ${time} to ${processedHour}`);
+              return processedHour;
+            });
+        } catch (e) {
+          console.error("Error processing timeRanges:", e);
+          timeRanges = [];
+        }
+
+        const processed = {
+          id: response.id,
+          gameName: response.gamename || "Unnamed",
+          timeZone: response.timezone || "Unknown",
+          timeRanges: timeRanges.length > 0 ? timeRanges : null,
+          createdAt: response.createdat || new Date().toISOString(),
+        };
+        console.log("Processed response:", JSON.stringify(processed, null, 2));
+        return processed;
+      });
+
+      console.log(
+        "Final processed data:",
+        JSON.stringify(processedData, null, 2)
+      );
       setResponses(processedData);
 
       // Calculate time distribution
       const distribution = calculateTimeDistribution(processedData);
       setTimeDistribution(distribution);
-    } catch {
-      setError("Failed to fetch data");
+    } catch (error) {
+      console.error("Error fetching survey responses:", error);
+      setError("Failed to load survey responses");
     } finally {
       setLoading(false);
     }
@@ -125,58 +215,63 @@ export default function Admin() {
     fetchData();
   }, []);
 
-  const formatTimeRanges = (timeRanges: string[] | string | null): string => {
-    if (!timeRanges || timeRanges.length === 0) {
-      return "No times selected";
-    }
-
+  const formatTimeRanges = (timeRanges: string[] | null): string => {
     try {
-      // Ensure we're working with an array
-      const ranges = Array.isArray(timeRanges) ? timeRanges : [timeRanges];
-
-      // Filter out any invalid values and sort numerically
-      const validHours = ranges
-        .filter((t): t is string => typeof t === "string")
-        .map((hour) => parseInt(hour, 10))
-        .filter((hour) => !isNaN(hour))
-        .sort((a, b) => a - b);
-
-      if (validHours.length === 0) {
+      if (
+        !timeRanges ||
+        !Array.isArray(timeRanges) ||
+        timeRanges.length === 0
+      ) {
+        console.log("No time ranges to format");
         return "No times selected";
       }
 
-      return validHours.join(", ");
-    } catch {
-      return "Invalid time format";
+      console.log("Formatting timeRanges:", timeRanges);
+      // Sort hours numerically
+      const sortedHours = timeRanges
+        .filter((hour): hour is string => typeof hour === "string")
+        .map((hour) => parseInt(hour, 10))
+        .sort((a, b) => a - b)
+        .map((hour) => hour.toString());
+
+      console.log("Sorted hours:", sortedHours);
+      return sortedHours.join(", ") || "No times selected";
+    } catch (error) {
+      console.error("Error formatting time ranges:", error);
+      return "Error formatting times";
     }
   };
 
-  const formatTimeZone = (timeZone: string | null): string => {
-    if (!timeZone) return "Unknown";
-
+  const formatTimeZone = (timeZone: string): string => {
     try {
-      // Extract the GMT part from the timezone string
-      const gmtMatch = timeZone.match(/GMT[+-]\d+(\.\d+)?/);
-      if (gmtMatch) {
-        return gmtMatch[0];
-      }
-      return timeZone;
-    } catch {
-      return "Unknown";
-    }
-  };
-
-  const formatDate = (date: string | null): string => {
-    if (!date) return "Unknown";
-
-    try {
-      const d = new Date(date);
-      if (isNaN(d.getTime())) {
+      if (!timeZone || timeZone === "Unknown") {
+        console.log("Empty or unknown timezone");
         return "Unknown";
       }
-      return d.toLocaleString();
-    } catch {
+      console.log("Formatting timezone:", timeZone);
+      const parts = timeZone.split("_");
+      const result = parts[0] || timeZone;
+      console.log("Formatted timezone:", result);
+      return result;
+    } catch (error) {
+      console.error("Error formatting timezone:", error);
       return "Unknown";
+    }
+  };
+
+  const formatDate = (dateString: string): string => {
+    try {
+      if (!dateString) {
+        return "Unknown";
+      }
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return "Invalid date";
+      }
+      return date.toLocaleString();
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
     }
   };
 
@@ -193,6 +288,9 @@ export default function Admin() {
     if (!selectedResponse) return;
 
     try {
+      console.log(
+        `Attempting to delete response with ID: ${selectedResponse.id}`
+      );
       await deleteResponse(selectedResponse.id);
 
       // Remove the deleted response from the state
@@ -206,6 +304,7 @@ export default function Admin() {
       // Show success message
       setError(null);
     } catch (error) {
+      console.error("Error deleting response:", error);
       setError(
         error instanceof Error ? error.message : "Failed to delete response"
       );
@@ -217,6 +316,7 @@ export default function Admin() {
 
   const handleClearAllConfirm = async () => {
     try {
+      console.log("Attempting to clear all responses");
       await clearAllResponses();
 
       // Clear all responses from the state
@@ -226,6 +326,7 @@ export default function Admin() {
       // Show success message
       setError(null);
     } catch (error) {
+      console.error("Error clearing responses:", error);
       setError(
         error instanceof Error ? error.message : "Failed to clear responses"
       );
