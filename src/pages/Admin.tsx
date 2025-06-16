@@ -58,6 +58,28 @@ export default function Admin() {
     []
   );
 
+  const getTimezoneOffset = (timezone: string): number => {
+    // Extract GMT offset from timezone string (e.g., "GMT+8_beijing" -> 8)
+    const match = timezone.match(/GMT([+-]\d+)/);
+    if (match) {
+      return parseInt(match[1], 10);
+    }
+    return 0; // Default to GMT+0 if no offset found
+  };
+
+  const convertToServerTime = (hour: string, timezone: string): string => {
+    try {
+      const hourNum = parseInt(hour, 10);
+      const offset = getTimezoneOffset(timezone);
+      // Convert to server time (GMT+0)
+      const serverHour = (hourNum - offset + 24) % 24;
+      return serverHour.toString();
+    } catch (error) {
+      console.error("Error converting time:", error);
+      return hour;
+    }
+  };
+
   const calculateTimeDistribution = (data: SurveyResponse[]) => {
     const hourCounts: { [key: string]: number } = {};
 
@@ -66,11 +88,12 @@ export default function Admin() {
       hourCounts[i.toString()] = 0;
     }
 
-    // Count occurrences of each hour
+    // Count occurrences of each hour, converting to server time
     data.forEach((response) => {
       if (response.timeRanges) {
         response.timeRanges.forEach((hour) => {
-          hourCounts[hour] = (hourCounts[hour] || 0) + 1;
+          const serverHour = convertToServerTime(hour, response.timeZone);
+          hourCounts[serverHour] = (hourCounts[serverHour] || 0) + 1;
         });
       }
     });
@@ -312,7 +335,7 @@ export default function Admin() {
                     fontWeight: 600,
                   }}
                 >
-                  Popular Times Distribution
+                  Popular Times Distribution (Server Time GMT+0)
                 </Typography>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
@@ -343,6 +366,11 @@ export default function Admin() {
                         border: "1px solid rgba(255, 255, 255, 0.1)",
                         color: "rgba(255, 255, 255, 0.9)",
                       }}
+                      labelFormatter={(label) => `Server Time: ${label}`}
+                      formatter={(value: number) => [
+                        `${value} responses`,
+                        "Count",
+                      ]}
                     />
                     <Bar
                       dataKey="count"
