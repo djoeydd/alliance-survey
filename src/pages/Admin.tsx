@@ -62,8 +62,11 @@ export default function Admin() {
     // Extract GMT offset from timezone string (e.g., "GMT+8_beijing" -> 8)
     const match = timezone.match(/GMT([+-]\d+)/);
     if (match) {
-      return parseInt(match[1], 10);
+      const offset = parseInt(match[1], 10);
+      console.log(`Extracted offset ${offset} from timezone ${timezone}`);
+      return offset;
     }
+    console.log(`No offset found in timezone ${timezone}, defaulting to 0`);
     return 0; // Default to GMT+0 if no offset found
   };
 
@@ -71,8 +74,17 @@ export default function Admin() {
     try {
       const hourNum = parseInt(hour, 10);
       const offset = getTimezoneOffset(timezone);
+      console.log(
+        `Converting time: Local ${hour}:00 (${timezone}) to server time`
+      );
+      console.log(`Hour number: ${hourNum}, Offset: ${offset}`);
+
       // Convert to server time (GMT+0)
+      // If local time is 11:00 in GMT+9, we need to subtract 9 hours to get server time
       const serverHour = (hourNum - offset + 24) % 24;
+      console.log(
+        `Server time calculation: (${hourNum} - ${offset} + 24) % 24 = ${serverHour}`
+      );
       return serverHour.toString();
     } catch (error) {
       console.error("Error converting time:", error);
@@ -93,6 +105,7 @@ export default function Admin() {
       if (response.timeRanges) {
         response.timeRanges.forEach((hour) => {
           const serverHour = convertToServerTime(hour, response.timeZone);
+          console.log(`Adding count for server hour ${serverHour}:00`);
           hourCounts[serverHour] = (hourCounts[serverHour] || 0) + 1;
         });
       }
@@ -106,6 +119,7 @@ export default function Admin() {
       }))
       .sort((a, b) => parseInt(a.hour) - parseInt(b.hour));
 
+    console.log("Final time distribution:", distribution);
     return distribution;
   };
 
