@@ -81,9 +81,10 @@ export default function Admin() {
 
       // Convert to server time (GMT+0)
       // If local time is 11:00 in GMT+9, we need to subtract 9 hours to get server time
-      const serverHour = (hourNum - offset + 24) % 24;
+      // Additional -2 hours adjustment needed
+      const serverHour = (hourNum - offset - 2 + 24) % 24;
       console.log(
-        `Server time calculation: (${hourNum} - ${offset} + 24) % 24 = ${serverHour}`
+        `Server time calculation: (${hourNum} - ${offset} - 2 + 24) % 24 = ${serverHour}`
       );
       return serverHour.toString();
     } catch (error) {
