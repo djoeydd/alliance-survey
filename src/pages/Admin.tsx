@@ -30,10 +30,10 @@ interface SurveyResponse {
 
 interface ApiResponse {
   id: number;
-  gameName: string;
-  timeZone: string;
-  timeRanges: unknown;
-  createdAt: string;
+  gamename: string;
+  timezone: string;
+  timeranges: string[] | string | null;
+  createdat: string;
 }
 
 export default function Admin() {
@@ -56,14 +56,19 @@ export default function Admin() {
 
         try {
           // Handle both string and array formats
-          if (typeof response.timeRanges === "string") {
-            console.log("Parsing timeRanges string:", response.timeRanges);
-            timeRanges = JSON.parse(response.timeRanges);
-          } else if (Array.isArray(response.timeRanges)) {
-            console.log("Using timeRanges array:", response.timeRanges);
-            timeRanges = response.timeRanges;
+          const rawTimeRanges = response.timeranges;
+          if (typeof rawTimeRanges === "string") {
+            console.log("Parsing timeRanges string:", rawTimeRanges);
+            timeRanges = JSON.parse(rawTimeRanges);
+          } else if (Array.isArray(rawTimeRanges)) {
+            console.log("Using timeRanges array:", rawTimeRanges);
+            timeRanges = rawTimeRanges;
+          } else if (rawTimeRanges === null) {
+            console.log("timeRanges is null");
+            timeRanges = [];
           } else {
-            console.log("Invalid timeRanges format:", response.timeRanges);
+            console.log("Invalid timeRanges format:", rawTimeRanges);
+            timeRanges = [];
           }
 
           // Extract hour numbers and remove leading zeros
@@ -83,8 +88,11 @@ export default function Admin() {
         }
 
         const processed = {
-          ...response,
-          timeRanges,
+          id: response.id,
+          gameName: response.gamename || "Unnamed",
+          timeZone: response.timezone || "Unknown",
+          timeRanges: timeRanges.length > 0 ? timeRanges : null,
+          createdAt: response.createdat || new Date().toISOString(),
         };
         console.log("Processed response:", JSON.stringify(processed, null, 2));
         return processed;
@@ -109,8 +117,12 @@ export default function Admin() {
 
   const formatTimeRanges = (timeRanges: string[] | null): string => {
     try {
-      if (!timeRanges || !Array.isArray(timeRanges)) {
-        console.log("Invalid timeRanges:", timeRanges);
+      if (
+        !timeRanges ||
+        !Array.isArray(timeRanges) ||
+        timeRanges.length === 0
+      ) {
+        console.log("No time ranges to format");
         return "No times selected";
       }
 
@@ -132,8 +144,8 @@ export default function Admin() {
 
   const formatTimeZone = (timeZone: string): string => {
     try {
-      if (!timeZone) {
-        console.log("Empty timezone");
+      if (!timeZone || timeZone === "Unknown") {
+        console.log("Empty or unknown timezone");
         return "Unknown";
       }
       console.log("Formatting timezone:", timeZone);
@@ -143,7 +155,23 @@ export default function Admin() {
       return result;
     } catch (error) {
       console.error("Error formatting timezone:", error);
-      return timeZone || "Unknown";
+      return "Unknown";
+    }
+  };
+
+  const formatDate = (dateString: string): string => {
+    try {
+      if (!dateString) {
+        return "Unknown";
+      }
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return "Invalid date";
+      }
+      return date.toLocaleString();
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
     }
   };
 
@@ -265,7 +293,7 @@ export default function Admin() {
                             {formatTimeRanges(response.timeRanges)}
                           </TableCell>
                           <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                            {new Date(response.createdAt).toLocaleString()}
+                            {formatDate(response.createdAt)}
                           </TableCell>
                         </TableRow>
                       );
