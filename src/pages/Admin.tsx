@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAdminData } from "../api";
+import { getAdminData, deleteResponse, clearAllResponses } from "../api";
 import {
   Container,
   Paper,
@@ -291,25 +291,7 @@ export default function Admin() {
       console.log(
         `Attempting to delete response with ID: ${selectedResponse.id}`
       );
-      const response = await fetch(
-        `/api/admin/responses/${selectedResponse.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const data = await response.json();
-      console.log("Delete response data:", data);
-
-      if (!response.ok) {
-        throw new Error(
-          data.error ||
-            `Failed to delete response: ${response.status} ${response.statusText}`
-        );
-      }
+      await deleteResponse(selectedResponse.id);
 
       // Remove the deleted response from the state
       setResponses(responses.filter((r) => r.id !== selectedResponse.id));
@@ -335,22 +317,7 @@ export default function Admin() {
   const handleClearAllConfirm = async () => {
     try {
       console.log("Attempting to clear all responses");
-      const response = await fetch("/api/admin/responses", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await response.json();
-      console.log("Clear all response data:", data);
-
-      if (!response.ok) {
-        throw new Error(
-          data.error ||
-            `Failed to clear responses: ${response.status} ${response.statusText}`
-        );
-      }
+      await clearAllResponses();
 
       // Clear all responses from the state
       setResponses([]);

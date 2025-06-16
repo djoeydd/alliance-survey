@@ -56,3 +56,35 @@ export const getAdminData = async () => {
     throw error;
   }
 };
+
+export const deleteResponse = async (id: number) => {
+  const response = await fetch(`${API_URL}/admin/responses/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || "Failed to delete response");
+  }
+
+  return response.json();
+};
+
+export const clearAllResponses = async () => {
+  const response = await fetch(`${API_URL}/admin/responses`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || "Failed to clear responses");
+  }
+
+  return response.json();
+};
