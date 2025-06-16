@@ -19,6 +19,15 @@ import {
 } from "@mui/material";
 import { Refresh as RefreshIcon, Home as HomeIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 interface SurveyResponse {
   id: number;
@@ -36,10 +45,46 @@ interface ApiResponse {
   createdat: string;
 }
 
+interface TimeDistribution {
+  hour: string;
+  count: number;
+}
+
 export default function Admin() {
   const [responses, setResponses] = useState<SurveyResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [timeDistribution, setTimeDistribution] = useState<TimeDistribution[]>(
+    []
+  );
+
+  const calculateTimeDistribution = (data: SurveyResponse[]) => {
+    const hourCounts: { [key: string]: number } = {};
+
+    // Initialize all hours with 0
+    for (let i = 0; i < 24; i++) {
+      hourCounts[i.toString()] = 0;
+    }
+
+    // Count occurrences of each hour
+    data.forEach((response) => {
+      if (response.timeRanges) {
+        response.timeRanges.forEach((hour) => {
+          hourCounts[hour] = (hourCounts[hour] || 0) + 1;
+        });
+      }
+    });
+
+    // Convert to array and sort by hour
+    const distribution = Object.entries(hourCounts)
+      .map(([hour, count]) => ({
+        hour: `${hour}:00`,
+        count,
+      }))
+      .sort((a, b) => parseInt(a.hour) - parseInt(b.hour));
+
+    return distribution;
+  };
 
   const fetchData = async () => {
     try {
@@ -103,6 +148,10 @@ export default function Admin() {
         JSON.stringify(processedData, null, 2)
       );
       setResponses(processedData);
+
+      // Calculate time distribution
+      const distribution = calculateTimeDistribution(processedData);
+      setTimeDistribution(distribution);
     } catch (error) {
       console.error("Error fetching survey responses:", error);
       setError("Failed to load survey responses");
@@ -253,6 +302,77 @@ export default function Admin() {
             </Alert>
           ) : (
             <Box>
+              {/* Time Distribution Chart */}
+              <Box sx={{ mb: 4, height: 300 }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: "rgba(255, 255, 255, 0.9)",
+                    mb: 2,
+                    fontWeight: 600,
+                  }}
+                >
+                  Popular Times Distribution
+                </Typography>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={timeDistribution}
+                    margin={{
+                      top: 20,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="rgba(255, 255, 255, 0.1)"
+                    />
+                    <XAxis
+                      dataKey="hour"
+                      stroke="rgba(255, 255, 255, 0.7)"
+                      tick={{ fill: "rgba(255, 255, 255, 0.7)" }}
+                    />
+                    <YAxis
+                      stroke="rgba(255, 255, 255, 0.7)"
+                      tick={{ fill: "rgba(255, 255, 255, 0.7)" }}
+                    />
+                    <RechartsTooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(28, 28, 28, 0.95)",
+                        border: "1px solid rgba(255, 255, 255, 0.1)",
+                        color: "rgba(255, 255, 255, 0.9)",
+                      }}
+                    />
+                    <Bar
+                      dataKey="count"
+                      fill="url(#colorGradient)"
+                      radius={[4, 4, 0, 0]}
+                    />
+                    <defs>
+                      <linearGradient
+                        id="colorGradient"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="#ff4d4d"
+                          stopOpacity={0.8}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="#ff8533"
+                          stopOpacity={0.8}
+                        />
+                      </linearGradient>
+                    </defs>
+                  </BarChart>
+                </ResponsiveContainer>
+              </Box>
+
               <TableContainer>
                 <Table>
                   <TableHead>
