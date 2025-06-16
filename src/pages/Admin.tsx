@@ -16,8 +16,17 @@ import {
   CircularProgress,
   IconButton,
   Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
-import { Refresh as RefreshIcon, Home as HomeIcon } from "@mui/icons-material";
+import {
+  Refresh as RefreshIcon,
+  Home as HomeIcon,
+  Delete as DeleteIcon,
+  DeleteSweep as DeleteSweepIcon,
+} from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import {
   BarChart,
@@ -57,6 +66,10 @@ export default function Admin() {
   const [timeDistribution, setTimeDistribution] = useState<TimeDistribution[]>(
     []
   );
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedResponse, setSelectedResponse] =
+    useState<SurveyResponse | null>(null);
+  const [clearAllDialogOpen, setClearAllDialogOpen] = useState(false);
 
   const getTimezoneOffset = (timezone: string): number => {
     // Extract GMT offset from timezone string (e.g., "GMT+8_beijing" -> 8)
@@ -262,6 +275,67 @@ export default function Admin() {
     }
   };
 
+  const handleDeleteClick = (response: SurveyResponse) => {
+    setSelectedResponse(response);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleClearAllClick = () => {
+    setClearAllDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedResponse) return;
+
+    try {
+      const response = await fetch(
+        `/api/admin/responses/${selectedResponse.id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete response");
+      }
+
+      // Remove the deleted response from the state
+      setResponses(responses.filter((r) => r.id !== selectedResponse.id));
+      // Recalculate time distribution
+      const newDistribution = calculateTimeDistribution(
+        responses.filter((r) => r.id !== selectedResponse.id)
+      );
+      setTimeDistribution(newDistribution);
+    } catch (error) {
+      console.error("Error deleting response:", error);
+      setError("Failed to delete response");
+    } finally {
+      setDeleteDialogOpen(false);
+      setSelectedResponse(null);
+    }
+  };
+
+  const handleClearAllConfirm = async () => {
+    try {
+      const response = await fetch("/api/admin/responses", {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to clear responses");
+      }
+
+      // Clear all responses from the state
+      setResponses([]);
+      setTimeDistribution([]);
+    } catch (error) {
+      console.error("Error clearing responses:", error);
+      setError("Failed to clear responses");
+    } finally {
+      setClearAllDialogOpen(false);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -303,6 +377,14 @@ export default function Admin() {
               Admin Panel
             </Typography>
             <Box>
+              <Tooltip title="Clear All Responses">
+                <IconButton
+                  onClick={handleClearAllClick}
+                  sx={{ color: "rgba(255, 255, 255, 0.7)", mr: 2 }}
+                >
+                  <DeleteSweepIcon />
+                </IconButton>
+              </Tooltip>
               <Tooltip title="Refresh Data">
                 <IconButton
                   onClick={fetchData}
@@ -432,35 +514,45 @@ export default function Admin() {
                       <TableCell sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
                         Submitted
                       </TableCell>
+                      <TableCell sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+                        Actions
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {responses.map((response) => {
-                      console.log("Rendering response:", response);
-                      return (
-                        <TableRow
-                          key={response.id}
-                          sx={{
-                            "&:hover": {
-                              backgroundColor: "rgba(255, 255, 255, 0.05)",
-                            },
-                          }}
-                        >
-                          <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                            {response.gameName || "Unnamed"}
-                          </TableCell>
-                          <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                            {formatTimeZone(response.timeZone)}
-                          </TableCell>
-                          <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                            {formatTimeRanges(response.timeRanges)}
-                          </TableCell>
-                          <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
-                            {formatDate(response.createdAt)}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                    {responses.map((response) => (
+                      <TableRow
+                        key={response.id}
+                        sx={{
+                          "&:hover": {
+                            backgroundColor: "rgba(255, 255, 255, 0.05)",
+                          },
+                        }}
+                      >
+                        <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+                          {response.gameName || "Unnamed"}
+                        </TableCell>
+                        <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+                          {formatTimeZone(response.timeZone)}
+                        </TableCell>
+                        <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+                          {formatTimeRanges(response.timeRanges)}
+                        </TableCell>
+                        <TableCell sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+                          {formatDate(response.createdAt)}
+                        </TableCell>
+                        <TableCell>
+                          <Tooltip title="Delete Response">
+                            <IconButton
+                              onClick={() => handleDeleteClick(response)}
+                              sx={{ color: "rgba(255, 255, 255, 0.7)" }}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -468,6 +560,88 @@ export default function Admin() {
           )}
         </Paper>
       </Container>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        PaperProps={{
+          sx: {
+            background: "rgba(28, 28, 28, 0.95)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+          },
+        }}
+      >
+        <DialogTitle sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+          Delete Response
+        </DialogTitle>
+        <DialogContent>
+          <Typography sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+            Are you sure you want to delete this response? This action cannot be
+            undone.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setDeleteDialogOpen(false)}
+            sx={{ color: "rgba(255, 255, 255, 0.7)" }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            sx={{
+              color: "#ff4d4d",
+              "&:hover": {
+                backgroundColor: "rgba(255, 77, 77, 0.1)",
+              },
+            }}
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Clear All Confirmation Dialog */}
+      <Dialog
+        open={clearAllDialogOpen}
+        onClose={() => setClearAllDialogOpen(false)}
+        PaperProps={{
+          sx: {
+            background: "rgba(28, 28, 28, 0.95)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+          },
+        }}
+      >
+        <DialogTitle sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+          Clear All Responses
+        </DialogTitle>
+        <DialogContent>
+          <Typography sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+            Are you sure you want to delete all responses? This action cannot be
+            undone.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setClearAllDialogOpen(false)}
+            sx={{ color: "rgba(255, 255, 255, 0.7)" }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleClearAllConfirm}
+            sx={{
+              color: "#ff4d4d",
+              "&:hover": {
+                backgroundColor: "rgba(255, 77, 77, 0.1)",
+              },
+            }}
+          >
+            Clear All
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

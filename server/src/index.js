@@ -21,10 +21,7 @@ app.use(express.json());
 async function initDatabase() {
   try {
     console.log("Initializing database...");
-    // Drop the table if it exists to ensure clean state
-    await sql`DROP TABLE IF EXISTS survey_responses`;
-
-    // Create the table with correct column names
+    // Create the table if it doesn't exist
     await sql`
       CREATE TABLE IF NOT EXISTS survey_responses (
         id SERIAL PRIMARY KEY,
@@ -128,6 +125,45 @@ app.get("/api/health", async (req, res) => {
     res
       .status(500)
       .json({ status: "error", message: "Database connection failed" });
+  }
+});
+
+// Add delete endpoint for survey responses
+app.delete("/api/admin/responses/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(`Deleting survey response with ID: ${id}`);
+
+    const result = await sql`
+      DELETE FROM survey_responses
+      WHERE id = ${id}
+      RETURNING *
+    `;
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Survey response not found" });
+    }
+
+    console.log("Successfully deleted survey response:", result.rows[0]);
+    res.json({ message: "Survey response deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting survey response:", error);
+    res.status(500).json({ error: "Failed to delete survey response" });
+  }
+});
+
+// Add endpoint to clear all responses
+app.delete("/api/admin/responses", async (req, res) => {
+  try {
+    console.log("Clearing all survey responses");
+    const result = await sql`DELETE FROM survey_responses RETURNING *`;
+    console.log(`Deleted ${result.rowCount} survey responses`);
+    res.json({
+      message: `Successfully deleted ${result.rowCount} survey responses`,
+    });
+  } catch (error) {
+    console.error("Error clearing survey responses:", error);
+    res.status(500).json({ error: "Failed to clear survey responses" });
   }
 });
 
