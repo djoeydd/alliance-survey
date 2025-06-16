@@ -135,7 +135,7 @@ function App() {
   const handleSubmit = async () => {
     try {
       await submitSurvey({
-        gameName: inGameName,
+        gameName: inGameName || "Anonymous",
         timeZone: selectedTimeZone,
         timeRanges: selectedTimeSlots,
       });

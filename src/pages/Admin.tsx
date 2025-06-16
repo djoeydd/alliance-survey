@@ -96,29 +96,25 @@ export default function Admin() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const data = await getAdminData();
-      console.log("Raw API response:", data);
+      const data: ApiResponse[] = await getAdminData();
 
       // Process the data
-      const processedData = data.map((response) => {
-        console.log("Processing response:", response);
-        return {
-          ...response,
-          timeRanges: Array.isArray(response.timeRanges)
-            ? response.timeRanges
-            : JSON.parse(response.timeRanges || "[]"),
-        };
-      });
+      const processedData = data.map((response) => ({
+        id: response.id,
+        gameName: response.gamename,
+        timeZone: response.timezone,
+        timeRanges: Array.isArray(response.timeranges)
+          ? response.timeranges
+          : JSON.parse(response.timeranges || "[]"),
+        createdAt: response.createdat,
+      }));
 
-      console.log("Processed data:", processedData);
       setResponses(processedData);
 
       // Calculate time distribution
       const distribution = calculateTimeDistribution(processedData);
-      console.log("Time distribution:", distribution);
       setTimeDistribution(distribution);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    } catch {
       setError("Failed to fetch data");
     } finally {
       setLoading(false);
