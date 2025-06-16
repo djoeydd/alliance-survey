@@ -72,69 +72,48 @@ export default function Admin() {
   const [clearAllDialogOpen, setClearAllDialogOpen] = useState(false);
 
   const getTimezoneOffset = (timezone: string): number => {
-    // Extract GMT offset from timezone string (e.g., "GMT+8_beijing" -> 8)
-    const match = timezone.match(/GMT([+-]\d+)/);
-    if (match) {
-      const offset = parseInt(match[1], 10);
-      console.log(`Extracted offset ${offset} from timezone ${timezone}`);
-      return offset;
-    }
-    console.log(`No offset found in timezone ${timezone}, defaulting to 0`);
-    return 0; // Default to GMT+0 if no offset found
-  };
-
-  const convertToServerTime = (hour: string, timezone: string): string => {
     try {
-      const hourNum = parseInt(hour, 10);
-      const offset = getTimezoneOffset(timezone);
-      console.log(
-        `Converting time: Local ${hour}:00 (${timezone}) to server time`
-      );
-      console.log(`Hour number: ${hourNum}, Offset: ${offset}`);
-
-      // Convert to server time (GMT+0)
-      // If local time is 11:00 in GMT+9, we need to subtract 9 hours to get server time
-      // Additional -2 hours adjustment needed
-      const serverHour = (hourNum - offset - 2 + 24) % 24;
-      console.log(
-        `Server time calculation: (${hourNum} - ${offset} - 2 + 24) % 24 = ${serverHour}`
-      );
-      return serverHour.toString();
+      // Extract the GMT offset from the timezone string
+      const match = timezone.match(/GMT([+-]\d+)/);
+      if (match) {
+        return parseInt(match[1], 10);
+      }
+      return 0; // Default to GMT+0 if no offset found
     } catch (error) {
-      console.error("Error converting time:", error);
-      return hour;
+      console.error("Error parsing timezone:", timezone, error);
+      return 0;
     }
   };
 
-  const calculateTimeDistribution = (data: SurveyResponse[]) => {
-    const hourCounts: { [key: string]: number } = {};
+  const calculateTimeDistribution = (responses: SurveyResponse[]) => {
+    // Initialize array for 24 hours
+    const hourCounts = new Array(24).fill(0);
 
-    // Initialize all hours with 0
-    for (let i = 0; i < 24; i++) {
-      hourCounts[i.toString()] = 0;
-    }
-
-    // Count occurrences of each hour, converting to server time
-    data.forEach((response) => {
-      if (response.timeRanges) {
-        response.timeRanges.forEach((hour) => {
-          const serverHour = convertToServerTime(hour, response.timeZone);
-          console.log(`Adding count for server hour ${serverHour}:00`);
-          hourCounts[serverHour] = (hourCounts[serverHour] || 0) + 1;
+    // Count responses for each hour
+    responses.forEach((response) => {
+      if (Array.isArray(response.timeRanges)) {
+        response.timeRanges.forEach((time) => {
+          try {
+            // Extract hour from time string (e.g., "01:00" -> 1)
+            const hour = parseInt(time.split(":")[0], 10);
+            if (!isNaN(hour) && hour >= 0 && hour < 24) {
+              // Convert to server time (GMT+0)
+              const serverHour =
+                (hour - getTimezoneOffset(response.timeZone) + 24) % 24;
+              hourCounts[serverHour]++;
+            }
+          } catch (error) {
+            console.error("Error processing time range:", time, error);
+          }
         });
       }
     });
 
-    // Convert to array and sort by hour
-    const distribution = Object.entries(hourCounts)
-      .map(([hour, count]) => ({
-        hour: `${hour}:00`,
-        count,
-      }))
-      .sort((a, b) => parseInt(a.hour) - parseInt(b.hour));
-
-    console.log("Final time distribution:", distribution);
-    return distribution;
+    // Convert to format needed for the chart
+    return hourCounts.map((count, hour) => ({
+      hour: `${hour}:00`,
+      count,
+    }));
   };
 
   const fetchData = async () => {
