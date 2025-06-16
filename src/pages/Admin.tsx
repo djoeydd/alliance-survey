@@ -288,6 +288,9 @@ export default function Admin() {
     if (!selectedResponse) return;
 
     try {
+      console.log(
+        `Attempting to delete response with ID: ${selectedResponse.id}`
+      );
       const response = await fetch(
         `/api/admin/responses/${selectedResponse.id}`,
         {
@@ -298,13 +301,15 @@ export default function Admin() {
         }
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to delete response");
-      }
+      const data = await response.json();
+      console.log("Delete response data:", data);
 
-      const result = await response.json();
-      console.log("Delete response:", result);
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+            `Failed to delete response: ${response.status} ${response.statusText}`
+        );
+      }
 
       // Remove the deleted response from the state
       setResponses(responses.filter((r) => r.id !== selectedResponse.id));
@@ -329,6 +334,7 @@ export default function Admin() {
 
   const handleClearAllConfirm = async () => {
     try {
+      console.log("Attempting to clear all responses");
       const response = await fetch("/api/admin/responses", {
         method: "DELETE",
         headers: {
@@ -336,13 +342,15 @@ export default function Admin() {
         },
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to clear responses");
-      }
+      const data = await response.json();
+      console.log("Clear all response data:", data);
 
-      const result = await response.json();
-      console.log("Clear all response:", result);
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+            `Failed to clear responses: ${response.status} ${response.statusText}`
+        );
+      }
 
       // Clear all responses from the state
       setResponses([]);
