@@ -292,12 +292,19 @@ export default function Admin() {
         `/api/admin/responses/${selectedResponse.id}`,
         {
           method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
 
       if (!response.ok) {
-        throw new Error("Failed to delete response");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to delete response");
       }
+
+      const result = await response.json();
+      console.log("Delete response:", result);
 
       // Remove the deleted response from the state
       setResponses(responses.filter((r) => r.id !== selectedResponse.id));
@@ -306,9 +313,14 @@ export default function Admin() {
         responses.filter((r) => r.id !== selectedResponse.id)
       );
       setTimeDistribution(newDistribution);
+
+      // Show success message
+      setError(null);
     } catch (error) {
       console.error("Error deleting response:", error);
-      setError("Failed to delete response");
+      setError(
+        error instanceof Error ? error.message : "Failed to delete response"
+      );
     } finally {
       setDeleteDialogOpen(false);
       setSelectedResponse(null);
@@ -319,18 +331,30 @@ export default function Admin() {
     try {
       const response = await fetch("/api/admin/responses", {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
-        throw new Error("Failed to clear responses");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to clear responses");
       }
+
+      const result = await response.json();
+      console.log("Clear all response:", result);
 
       // Clear all responses from the state
       setResponses([]);
       setTimeDistribution([]);
+
+      // Show success message
+      setError(null);
     } catch (error) {
       console.error("Error clearing responses:", error);
-      setError("Failed to clear responses");
+      setError(
+        error instanceof Error ? error.message : "Failed to clear responses"
+      );
     } finally {
       setClearAllDialogOpen(false);
     }

@@ -128,12 +128,24 @@ app.get("/api/health", async (req, res) => {
   }
 });
 
-// Add delete endpoint for survey responses
+// Delete all responses
+app.delete("/api/admin/responses", async (req, res) => {
+  try {
+    console.log("Attempting to clear all responses");
+    const result = await sql`DELETE FROM survey_responses RETURNING *`;
+    console.log(`Cleared ${result.rowCount} responses`);
+    res.json({ message: `Successfully cleared ${result.rowCount} responses` });
+  } catch (error) {
+    console.error("Error clearing responses:", error);
+    res.status(500).json({ error: "Failed to clear responses" });
+  }
+});
+
+// Delete a single response
 app.delete("/api/admin/responses/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(`Deleting survey response with ID: ${id}`);
-
+    console.log(`Attempting to delete response with ID: ${id}`);
     const result = await sql`
       DELETE FROM survey_responses
       WHERE id = ${id}
@@ -141,29 +153,15 @@ app.delete("/api/admin/responses/:id", async (req, res) => {
     `;
 
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: "Survey response not found" });
+      console.log(`No response found with ID: ${id}`);
+      return res.status(404).json({ error: "Response not found" });
     }
 
-    console.log("Successfully deleted survey response:", result.rows[0]);
-    res.json({ message: "Survey response deleted successfully" });
+    console.log(`Successfully deleted response with ID: ${id}`);
+    res.json({ message: "Response deleted successfully" });
   } catch (error) {
-    console.error("Error deleting survey response:", error);
-    res.status(500).json({ error: "Failed to delete survey response" });
-  }
-});
-
-// Add endpoint to clear all responses
-app.delete("/api/admin/responses", async (req, res) => {
-  try {
-    console.log("Clearing all survey responses");
-    const result = await sql`DELETE FROM survey_responses RETURNING *`;
-    console.log(`Deleted ${result.rowCount} survey responses`);
-    res.json({
-      message: `Successfully deleted ${result.rowCount} survey responses`,
-    });
-  } catch (error) {
-    console.error("Error clearing survey responses:", error);
-    res.status(500).json({ error: "Failed to clear survey responses" });
+    console.error("Error deleting response:", error);
+    res.status(500).json({ error: "Failed to delete response" });
   }
 });
 
