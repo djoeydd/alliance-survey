@@ -98,8 +98,9 @@ export default function Admin() {
             const hour = parseInt(time.split(":")[0], 10);
             if (!isNaN(hour) && hour >= 0 && hour < 24) {
               // Convert to server time (GMT+0)
+              // Subtract 2 additional hours from the conversion
               const serverHour =
-                (hour - getTimezoneOffset(response.timeZone) + 24) % 24;
+                (hour - getTimezoneOffset(response.timeZone) - 2 + 24) % 24;
               hourCounts[serverHour]++;
             }
           } catch (error) {
