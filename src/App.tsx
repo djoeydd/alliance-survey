@@ -102,12 +102,11 @@ function App() {
       const date = new Date();
       const formatter = new Intl.DateTimeFormat("en-US", {
         timeZone,
-        timeZoneName: "short",
+        timeZoneName: "longOffset",
       });
-      const formattedDate = formatter.format(date);
-      const offsetStr = formattedDate.split(" ").pop() || "";
-      const match = offsetStr.match(/GMT([+-]?\d+)(?::\d+)?/);
-      const offset = match ? match[0] : "GMT+00:00";
+      const parts = formatter.formatToParts(date);
+      const offsetPart = parts.find((part) => part.type === "timeZoneName");
+      const offset = offsetPart ? offsetPart.value : "GMT+00:00";
 
       options.push({
         value: `${timeZone}_${cityKey}`,
