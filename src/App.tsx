@@ -266,7 +266,7 @@ function App() {
                     },
                   }}
                 >
-                  Admin Panel
+                  View Results
                 </Button>
               </Box>
 

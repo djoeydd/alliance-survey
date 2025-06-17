@@ -74,10 +74,17 @@ export default function Admin() {
   const getTimezoneOffset = (timezone: string): number => {
     try {
       // Extract the GMT offset from the timezone string
-      const match = timezone.match(/GMT([+-]\d+)/);
+      const match = timezone.match(/GMT([+-]?\d+(?:\.\d+)?)/);
       if (match) {
-        return parseInt(match[1], 10);
+        const offset = parseFloat(match[1]);
+        // Round down to nearest full hour
+        const roundedOffset = Math.floor(offset);
+        console.log(
+          `Extracted offset ${offset} from timezone ${timezone}, rounded to ${roundedOffset}`
+        );
+        return roundedOffset;
       }
+      console.log(`No offset found in timezone ${timezone}, defaulting to 0`);
       return 0; // Default to GMT+0 if no offset found
     } catch (error) {
       console.error("Error parsing timezone:", timezone, error);
@@ -97,10 +104,21 @@ export default function Admin() {
             // Extract hour from time string (e.g., "01:00" -> 1)
             const hour = parseInt(time.split(":")[0], 10);
             if (!isNaN(hour) && hour >= 0 && hour < 24) {
+              // Get the timezone offset
+              const offset = getTimezoneOffset(response.timeZone);
+              console.log(
+                `Converting time: Local ${hour}:00 (${response.timeZone}, offset: ${offset}) to server time`
+              );
+
               // Convert to server time (GMT+0)
-              // Subtract 2 additional hours from the conversion
-              const serverHour =
-                (hour - getTimezoneOffset(response.timeZone) - 2 + 24) % 24;
+              // Formula: (local_hour - offset - 2 + 24) % 24
+              // -2 is the additional adjustment needed
+              // +24 ensures we don't get negative numbers before the modulo
+              const serverHour = (hour - offset - 2 + 24) % 24;
+              console.log(
+                `Server time calculation: (${hour} - ${offset} - 2 + 24) % 24 = ${serverHour}`
+              );
+
               hourCounts[serverHour]++;
             }
           } catch (error) {
@@ -411,7 +429,7 @@ export default function Admin() {
                     fontWeight: 600,
                   }}
                 >
-                  Popular Times Distribution (Server Time GMT+0)
+                  Popular Times Distribution (Server Time)
                 </Typography>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
