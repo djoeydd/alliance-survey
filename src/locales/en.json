@@ -10,6 +10,10 @@
     "submit": "Submit Survey",
     "submitSuccess": "Survey submitted successfully!",
     "submitError": "Failed to submit survey. Please try again.",
+    "thankYou": "Thank You!",
+    "thankYouMessage": "Your response has been recorded, thank you. You can view the results or close this window.",
+    "backToSurvey": "Back to Survey",
+    "viewResults": "View Results",
     "timeZones": {
       "local": "Your Local Time",
       "cities": {
