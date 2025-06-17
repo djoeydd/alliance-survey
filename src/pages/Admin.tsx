@@ -132,8 +132,10 @@ export default function Admin() {
       if (Array.isArray(response.timeRanges)) {
         response.timeRanges.forEach((time) => {
           try {
+            console.log(`Processing time string for hour extraction: ${time}`);
             // Extract hour from time string (e.g., "01:00" -> 1)
             const hour = parseInt(time.split(":")[0], 10);
+            console.log(`Extracted hour: ${hour}, isNaN: ${isNaN(hour)}`);
             if (!isNaN(hour) && hour >= 0 && hour < 24) {
               // Get the timezone offset
               const offset = getTimezoneOffset(response.timeZone);
@@ -182,9 +184,15 @@ export default function Admin() {
         try {
           // Handle both string and array formats
           const rawTimeRanges = response.timeranges;
+          console.log(
+            `Raw timeRanges from API: ${rawTimeRanges}, type: ${typeof rawTimeRanges}`
+          );
           if (typeof rawTimeRanges === "string") {
             console.log("Parsing timeRanges string:", rawTimeRanges);
             timeRanges = JSON.parse(rawTimeRanges);
+            console.log(
+              `Parsed timeRanges (from string): ${JSON.stringify(timeRanges)}`
+            );
           } else if (Array.isArray(rawTimeRanges)) {
             console.log("Using timeRanges array:", rawTimeRanges);
             timeRanges = rawTimeRanges;
@@ -196,9 +204,14 @@ export default function Admin() {
             timeRanges = [];
           }
 
-          // Extract hour numbers and remove leading zeros
+          // Filter out non-string values and then map
           timeRanges = timeRanges
-            .filter((time): time is string => typeof time === "string")
+            .filter((time): time is string => {
+              const isString = typeof time === "string";
+              if (!isString)
+                console.warn(`Non-string time range filtered: ${time}`);
+              return isString;
+            })
             .map((time) => {
               console.log("Processing time:", time);
               // Extract hour number from time string (e.g., "01:00" -> "1")
@@ -208,7 +221,7 @@ export default function Admin() {
               return processedHour;
             });
         } catch (e) {
-          console.error("Error processing timeRanges:", e);
+          console.error("Error processing timeRanges:", timeRanges, e);
           timeRanges = [];
         }
 

@@ -73,6 +73,7 @@ function App() {
       "America/Los_Angeles": "los_angeles",
       "America/Denver": "denver",
       "America/Chicago": "chicago",
+      "America/Mexico_City": "mexico_city",
       "America/New_York": "new_york",
       "America/Caracas": "caracas",
       "America/Sao_Paulo": "sao_paulo",
