@@ -2,6 +2,7 @@ import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
   palette: {
+    mode: "dark",
     primary: {
       main: "#6C63FF", // Modern purple
       light: "#8F88FF",
@@ -13,8 +14,8 @@ export const theme = createTheme({
       dark: "#D64A4A",
     },
     background: {
-      default: "#F8F9FA",
-      paper: "#FFFFFF",
+      default: "#1a1a1a",
+      paper: "#2d2d2d",
     },
   },
   typography: {
@@ -31,6 +32,16 @@ export const theme = createTheme({
     borderRadius: 12,
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          minHeight: "100dvh",
+          background: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)",
+          backgroundAttachment: "fixed",
+          WebkitOverflowScrolling: "touch",
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -43,16 +54,18 @@ export const theme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08)",
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+          background: "rgba(45, 45, 45, 0.95)",
+          backdropFilter: "blur(10px)",
         },
       },
     },
     MuiChip: {
       styleOverrides: {
         root: {
-          backgroundColor: "#F0F0FF",
+          backgroundColor: "rgba(108, 99, 255, 0.1)",
           "&:hover": {
-            backgroundColor: "#E0E0FF",
+            backgroundColor: "rgba(108, 99, 255, 0.2)",
           },
         },
       },

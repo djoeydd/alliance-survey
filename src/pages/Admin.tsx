@@ -73,19 +73,32 @@ export default function Admin() {
 
   const getTimezoneOffset = (timezone: string): number => {
     try {
-      // Extract the GMT offset from the timezone string
-      const match = timezone.match(/GMT([+-]?\d+(?:\.\d+)?)/);
+      // Extract the IANA timezone from the timezone string (format: "America/Chicago_city")
+      const ianaTimezone = timezone.split("_")[0];
+
+      // Create a date object for the current time
+      const date = new Date();
+
+      // Get the timezone offset in minutes
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: ianaTimezone,
+        timeZoneName: "short",
+      });
+
+      // Extract the offset from the formatted string (e.g., "GMT-05:00" -> -5)
+      const offsetStr = formatter.format(date).split(" ")[2];
+      const match = offsetStr.match(/GMT([+-]?\d+)(?::\d+)?/);
+
       if (match) {
-        const offset = parseFloat(match[1]);
-        // Round down to nearest full hour
-        const roundedOffset = Math.floor(offset);
-        console.log(
-          `Extracted offset ${offset} from timezone ${timezone}, rounded to ${roundedOffset}`
-        );
-        return roundedOffset;
+        const offset = parseInt(match[1], 10);
+        console.log(`Extracted offset ${offset} from timezone ${ianaTimezone}`);
+        return offset;
       }
-      console.log(`No offset found in timezone ${timezone}, defaulting to 0`);
-      return 0; // Default to GMT+0 if no offset found
+
+      console.log(
+        `No offset found in timezone ${ianaTimezone}, defaulting to 0`
+      );
+      return 0;
     } catch (error) {
       console.error("Error parsing timezone:", timezone, error);
       return 0;
@@ -111,12 +124,9 @@ export default function Admin() {
               );
 
               // Convert to server time (GMT+0)
-              // Formula: (local_hour - offset - 2 + 24) % 24
-              // -2 is the additional adjustment needed
-              // +24 ensures we don't get negative numbers before the modulo
-              const serverHour = (hour - offset - 2 + 24) % 24;
+              const serverHour = (hour - offset + 24) % 24;
               console.log(
-                `Server time calculation: (${hour} - ${offset} - 2 + 24) % 24 = ${serverHour}`
+                `Server time calculation: (${hour} - ${offset} + 24) % 24 = ${serverHour}`
               );
 
               hourCounts[serverHour]++;

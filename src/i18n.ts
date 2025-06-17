@@ -2,22 +2,24 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 // Import all language files
-import en from "./locales/en.json";
-import es from "./locales/es.json";
-import pt from "./locales/pt.json";
-import ja from "./locales/ja.json";
-import zh from "./locales/zh.json";
-import zhTW from "./locales/zh-TW.json";
-import tr from "./locales/tr.json";
-import ko from "./locales/ko.json";
-import fr from "./locales/fr.json";
-import nl from "./locales/nl.json";
-import de from "./locales/de.json";
-import ar from "./locales/ar.json";
+import en from "./i18n/locales/en.json";
+import es from "./i18n/locales/es.json";
+import pt from "./i18n/locales/pt.json";
+import ja from "./i18n/locales/ja.json";
+import zh from "./i18n/locales/zh.json";
+import zhTW from "./i18n/locales/zh-TW.json";
+import tr from "./i18n/locales/tr.json";
+import ko from "./i18n/locales/ko.json";
+import fr from "./i18n/locales/fr.json";
+import nl from "./i18n/locales/nl.json";
+import de from "./i18n/locales/de.json";
+import ar from "./i18n/locales/ar.json";
+import vi from "./i18n/locales/vi.json";
+import th from "./i18n/locales/th.json";
 
 // Add type declaration for JSON imports
 declare module "*.json" {
-  const value: { [key: string]: any };
+  const value: Record<string, unknown>;
   export default value;
 }
 
@@ -35,6 +37,8 @@ i18n.use(initReactI18next).init({
     nl: { translation: nl },
     de: { translation: de },
     ar: { translation: ar },
+    vi: { translation: vi },
+    th: { translation: th },
   },
   lng: "en",
   fallbackLng: "en",

@@ -46,13 +46,14 @@ function App() {
     const options = [];
     const now = new Date();
 
-    // Add user's local GMT offset at the top
+    // Add user's local time zone at the top
+    const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const localOffset = -now.getTimezoneOffset() / 60;
     const sign = localOffset >= 0 ? "+" : "";
     const localValue = `GMT${sign}${localOffset}`;
 
     options.unshift({
-      value: `${localValue}_local`,
+      value: `${localTimeZone}_local`,
       label: `${localValue} - ${t("allianceSurvey.timeZones.local")}`,
     });
 
@@ -63,46 +64,51 @@ function App() {
       disabled: true,
     });
 
-    // GMT offsets with example cities
+    // IANA time zones with example cities
     const timeZoneCities = {
-      "-12": "baker_island",
-      "-11": "samoa",
-      "-10": "hawaii",
-      "-9": "alaska",
-      "-8": "los_angeles",
-      "-7": "denver",
-      "-6": "chicago",
-      "-5": "new_york",
-      "-4": "caracas",
-      "-3": "sao_paulo",
-      "-2": "fernando",
-      "-1": "cape_verde",
-      "0": "london",
-      "1": "paris",
-      "2": "cairo",
-      "3": "moscow",
-      "4": "dubai",
-      "5": "karachi",
-      "5.5": "new_delhi",
-      "6": "dhaka",
-      "7": "bangkok",
-      "8": "beijing",
-      "9": "tokyo",
-      "9.5": "adelaide",
-      "10": "sydney",
-      "11": "solomon",
-      "12": "auckland",
-      "13": "samoa_tonga",
-      "14": "line_islands",
+      "Pacific/Midway": "baker_island",
+      "Pacific/Samoa": "samoa",
+      "Pacific/Honolulu": "hawaii",
+      "America/Anchorage": "alaska",
+      "America/Los_Angeles": "los_angeles",
+      "America/Denver": "denver",
+      "America/Chicago": "chicago",
+      "America/New_York": "new_york",
+      "America/Caracas": "caracas",
+      "America/Sao_Paulo": "sao_paulo",
+      "America/Noronha": "fernando",
+      "Atlantic/Cape_Verde": "cape_verde",
+      "Europe/London": "london",
+      "Europe/Paris": "paris",
+      "Africa/Cairo": "cairo",
+      "Europe/Moscow": "moscow",
+      "Asia/Dubai": "dubai",
+      "Asia/Karachi": "karachi",
+      "Asia/Kolkata": "new_delhi",
+      "Asia/Dhaka": "dhaka",
+      "Asia/Bangkok": "bangkok",
+      "Asia/Shanghai": "beijing",
+      "Asia/Tokyo": "tokyo",
+      "Australia/Adelaide": "adelaide",
+      "Australia/Sydney": "sydney",
+      "Pacific/Guadalcanal": "solomon",
+      "Pacific/Auckland": "auckland",
+      "Pacific/Apia": "samoa_tonga",
+      "Pacific/Kiritimati": "line_islands",
     };
 
     // Add time zones with example cities
-    Object.entries(timeZoneCities).forEach(([offset, cityKey]) => {
-      const sign = Number(offset) >= 0 ? "+" : "";
-      const value = `GMT${sign}${offset}`;
+    Object.entries(timeZoneCities).forEach(([timeZone, cityKey]) => {
+      const date = new Date();
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        timeZone,
+        timeZoneName: "short",
+      });
+      const offset = formatter.format(date).split(" ")[2];
+
       options.push({
-        value: `${value}_${cityKey}`,
-        label: `${value} - ${t(`allianceSurvey.timeZones.cities.${cityKey}`)}`,
+        value: `${timeZone}_${cityKey}`,
+        label: `${offset} - ${t(`allianceSurvey.timeZones.cities.${cityKey}`)}`,
       });
     });
 
@@ -185,8 +191,9 @@ function App() {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Box
           sx={{
-            minHeight: { xs: "100dvh", sm: "100vh" },
+            minHeight: "100dvh",
             background: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)",
+            backgroundAttachment: "fixed",
             py: 4,
             display: "flex",
             flexDirection: "column",
@@ -197,6 +204,12 @@ function App() {
             bottom: 0,
             overflowY: "auto",
             WebkitOverflowScrolling: "touch",
+            "@supports (padding: max(0px))": {
+              paddingTop: "max(16px, env(safe-area-inset-top))",
+              paddingBottom: "max(16px, env(safe-area-inset-bottom))",
+              paddingLeft: "max(16px, env(safe-area-inset-left))",
+              paddingRight: "max(16px, env(safe-area-inset-right))",
+            },
           }}
         >
           <Container
