@@ -147,8 +147,8 @@ function App() {
         severity: "success",
       });
 
-      // Navigate to thank you page after successful submission
-      navigate("/thank-you");
+      // Navigate to thank you page with current language
+      navigate("/thank-you", { state: { language: i18n.language } });
     } catch {
       setSnackbar({
         open: true,
@@ -302,6 +302,8 @@ function App() {
                       { code: "nl", label: "Nederlands" },
                       { code: "de", label: "Deutsch" },
                       { code: "ar", label: "العربية" },
+                      { code: "vi", label: "Tiếng Việt" },
+                      { code: "th", label: "ไทย" },
                     ].map((lang) => (
                       <Button
                         key={lang.code}

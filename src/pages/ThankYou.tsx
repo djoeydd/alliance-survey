@@ -1,10 +1,20 @@
 import { Box, Container, Paper, Typography, Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { useEffect } from "react";
 
 function ThankYou() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Get language from navigation state or default to English
+    const language = location.state?.language || "en";
+    if (language !== i18n.language) {
+      i18n.changeLanguage(language);
+    }
+  }, [location.state?.language, i18n]);
 
   return (
     <Box
