@@ -1,0 +1,50 @@
+{
+  "allianceSurvey": {
+    "title": "アライアンス調査",
+    "subtitle": "みんなにとって最適な時間を見つけましょう",
+    "inGameName": "ゲーム内の名前",
+    "timeZone": "タイムゾーン",
+    "availableTimes": "利用可能な時間",
+    "submit": "送信",
+    "submitSuccess": "調査が正常に送信されました！",
+    "submitError": "送信エラー。もう一度お試しください。",
+    "thankYou": "ありがとうございます！",
+    "thankYouMessage": "ご回答が記録されました。結果を確認するか、このウィンドウを閉じることができます。",
+    "backToSurvey": "調査に戻る",
+    "viewResults": "結果を見る",
+    "timeZones": {
+      "local": "あなたの現地時間",
+      "cities": {
+        "baker_island": "ベーカー島",
+        "samoa": "サモア",
+        "hawaii": "ハワイ",
+        "alaska": "アラスカ",
+        "los_angeles": "ロサンゼルス",
+        "denver": "デンバー",
+        "chicago": "シカゴ",
+        "new_york": "ニューヨーク",
+        "caracas": "カラカス",
+        "sao_paulo": "サンパウロ",
+        "fernando": "フェルナンド・デ・ノローニャ",
+        "cape_verde": "カーボベルデ",
+        "london": "ロンドン",
+        "paris": "パリ",
+        "cairo": "カイロ",
+        "moscow": "モスクワ",
+        "dubai": "ドバイ",
+        "karachi": "カラチ",
+        "new_delhi": "ニューデリー",
+        "dhaka": "ダッカ",
+        "bangkok": "バンコク",
+        "beijing": "北京",
+        "tokyo": "東京",
+        "adelaide": "アデレード",
+        "sydney": "シドニー",
+        "solomon": "ソロモン諸島",
+        "auckland": "オークランド",
+        "samoa_tonga": "サモアとトンガ",
+        "line_islands": "ライン諸島"
+      }
+    }
+  }
+}

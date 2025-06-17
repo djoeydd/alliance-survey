@@ -1,0 +1,50 @@
+{
+  "allianceSurvey": {
+    "title": "联盟调查",
+    "subtitle": "帮助我们找到最适合每个人的时间",
+    "inGameName": "游戏内名称",
+    "timeZone": "时区",
+    "availableTimes": "可用时间",
+    "submit": "提交",
+    "submitSuccess": "调查提交成功！",
+    "submitError": "提交错误，请重试。",
+    "thankYou": "谢谢！",
+    "thankYouMessage": "您的回答已记录，谢谢。您可以查看结果或关闭此窗口。",
+    "backToSurvey": "返回调查",
+    "viewResults": "查看结果",
+    "timeZones": {
+      "local": "您的本地时间",
+      "cities": {
+        "baker_island": "贝克岛",
+        "samoa": "萨摩亚",
+        "hawaii": "夏威夷",
+        "alaska": "阿拉斯加",
+        "los_angeles": "洛杉矶",
+        "denver": "丹佛",
+        "chicago": "芝加哥",
+        "new_york": "纽约",
+        "caracas": "加拉加斯",
+        "sao_paulo": "圣保罗",
+        "fernando": "费尔南多·迪诺罗尼亚",
+        "cape_verde": "佛得角",
+        "london": "伦敦",
+        "paris": "巴黎",
+        "cairo": "开罗",
+        "moscow": "莫斯科",
+        "dubai": "迪拜",
+        "karachi": "卡拉奇",
+        "new_delhi": "新德里",
+        "dhaka": "达卡",
+        "bangkok": "曼谷",
+        "beijing": "北京",
+        "tokyo": "东京",
+        "adelaide": "阿德莱德",
+        "sydney": "悉尼",
+        "solomon": "所罗门群岛",
+        "auckland": "奥克兰",
+        "samoa_tonga": "萨摩亚和汤加",
+        "line_islands": "莱恩群岛"
+      }
+    }
+  }
+}

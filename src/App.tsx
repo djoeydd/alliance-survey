@@ -23,10 +23,11 @@ import type { SelectChangeEvent } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { submitSurvey } from "./services/survey";
 import { theme } from "./theme";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function App() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [inGameName, setInGameName] = useState("");
   const [selectedTimeZone, setSelectedTimeZone] = useState("");
   const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>([]);
@@ -146,10 +147,8 @@ function App() {
         severity: "success",
       });
 
-      // Reset form
-      setInGameName("");
-      setSelectedTimeZone("");
-      setSelectedTimeSlots([]);
+      // Navigate to thank you page after successful submission
+      navigate("/thank-you");
     } catch {
       setSnackbar({
         open: true,

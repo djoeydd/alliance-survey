@@ -1,0 +1,50 @@
+{
+  "allianceSurvey": {
+    "title": "연합 설문조사",
+    "subtitle": "모두에게 가장 적합한 시간을 찾아보세요",
+    "inGameName": "게임 내 이름",
+    "timeZone": "시간대",
+    "availableTimes": "가능한 시간",
+    "submit": "제출",
+    "submitSuccess": "설문조사가 성공적으로 제출되었습니다!",
+    "submitError": "제출 오류. 다시 시도해 주세요.",
+    "thankYou": "감사합니다!",
+    "thankYouMessage": "응답이 기록되었습니다. 결과를 확인하거나 이 창을 닫을 수 있습니다.",
+    "backToSurvey": "설문조사로 돌아가기",
+    "viewResults": "결과 보기",
+    "timeZones": {
+      "local": "현지 시간",
+      "cities": {
+        "baker_island": "베이커 섬",
+        "samoa": "사모아",
+        "hawaii": "하와이",
+        "alaska": "알래스카",
+        "los_angeles": "로스앤젤레스",
+        "denver": "덴버",
+        "chicago": "시카고",
+        "new_york": "뉴욕",
+        "caracas": "카라카스",
+        "sao_paulo": "상파울루",
+        "fernando": "페르난두 데 노로냐",
+        "cape_verde": "카보베르데",
+        "london": "런던",
+        "paris": "파리",
+        "cairo": "카이로",
+        "moscow": "모스크바",
+        "dubai": "두바이",
+        "karachi": "카라치",
+        "new_delhi": "뉴델리",
+        "dhaka": "다카",
+        "bangkok": "방콕",
+        "beijing": "베이징",
+        "tokyo": "도쿄",
+        "adelaide": "애들레이드",
+        "sydney": "시드니",
+        "solomon": "솔로몬 제도",
+        "auckland": "오클랜드",
+        "samoa_tonga": "사모아와 통가",
+        "line_islands": "라인 제도"
+      }
+    }
+  }
+}

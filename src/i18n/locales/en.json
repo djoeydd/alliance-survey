@@ -1,0 +1,50 @@
+{
+  "allianceSurvey": {
+    "title": "Alliance Survey",
+    "subtitle": "Help us find the best time for everyone",
+    "inGameName": "In-Game Name",
+    "timeZone": "Time Zone",
+    "availableTimes": "Available Times",
+    "submit": "Submit",
+    "submitSuccess": "Survey submitted successfully!",
+    "submitError": "Error submitting survey. Please try again.",
+    "thankYou": "Thank You!",
+    "thankYouMessage": "Your response has been recorded, thank you. You can view the results or close this window.",
+    "backToSurvey": "Back to Survey",
+    "viewResults": "View Results",
+    "timeZones": {
+      "local": "Your Local Time",
+      "cities": {
+        "baker_island": "Baker Island",
+        "samoa": "Samoa",
+        "hawaii": "Hawaii",
+        "alaska": "Alaska",
+        "los_angeles": "Los Angeles",
+        "denver": "Denver",
+        "chicago": "Chicago",
+        "new_york": "New York",
+        "caracas": "Caracas",
+        "sao_paulo": "São Paulo",
+        "fernando": "Fernando de Noronha",
+        "cape_verde": "Cape Verde",
+        "london": "London",
+        "paris": "Paris",
+        "cairo": "Cairo",
+        "moscow": "Moscow",
+        "dubai": "Dubai",
+        "karachi": "Karachi",
+        "new_delhi": "New Delhi",
+        "dhaka": "Dhaka",
+        "bangkok": "Bangkok",
+        "beijing": "Beijing",
+        "tokyo": "Tokyo",
+        "adelaide": "Adelaide",
+        "sydney": "Sydney",
+        "solomon": "Solomon Islands",
+        "auckland": "Auckland",
+        "samoa_tonga": "Samoa & Tonga",
+        "line_islands": "Line Islands"
+      }
+    }
+  }
+}
