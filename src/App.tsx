@@ -104,7 +104,10 @@ function App() {
         timeZone,
         timeZoneName: "short",
       });
-      const offset = formatter.format(date).split(" ")[2];
+      const formattedDate = formatter.format(date);
+      const offsetStr = formattedDate.split(" ").pop() || "";
+      const match = offsetStr.match(/GMT([+-]?\d+)(?::\d+)?/);
+      const offset = match ? match[0] : "GMT+00:00";
 
       options.push({
         value: `${timeZone}_${cityKey}`,
