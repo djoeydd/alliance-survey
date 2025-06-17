@@ -20,6 +20,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Tabs,
+  Tab,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import {
   Refresh as RefreshIcon,
@@ -36,6 +40,9 @@ import {
   CartesianGrid,
   Tooltip as RechartsTooltip,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 
 interface SurveyResponse {
@@ -70,6 +77,10 @@ export default function Admin() {
   const [selectedResponse, setSelectedResponse] =
     useState<SurveyResponse | null>(null);
   const [clearAllDialogOpen, setClearAllDialogOpen] = useState(false);
+  const [currentTab, setCurrentTab] = useState(0);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const getTimezoneOffset = (timezone: string): number => {
     try {
@@ -131,9 +142,12 @@ export default function Admin() {
               );
 
               // Convert to server time (GMT+0)
-              const serverHour = (hour - offset + 24) % 24;
+              // Formula: (local_hour - offset - 2 + 24) % 24
+              // -2 is the additional adjustment needed
+              // +24 ensures we don't get negative numbers before the modulo
+              const serverHour = (hour - offset - 2 + 24) % 24;
               console.log(
-                `Server time calculation: (${hour} - ${offset} + 24) % 24 = ${serverHour}`
+                `Server time calculation: (${hour} - ${offset} - 2 + 24) % 24 = ${serverHour}`
               );
 
               hourCounts[serverHour]++;
@@ -436,81 +450,169 @@ export default function Admin() {
             </Alert>
           ) : (
             <Box>
-              {/* Time Distribution Chart */}
-              <Box sx={{ mb: 4, height: 300 }}>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    color: "rgba(255, 255, 255, 0.9)",
-                    mb: 2,
-                    fontWeight: 600,
-                  }}
+              <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
+                <Tabs
+                  value={currentTab}
+                  onChange={(event, newValue) => setCurrentTab(newValue)}
+                  aria-label="chart tabs"
+                  textColor="primary"
+                  indicatorColor="primary"
                 >
-                  Popular Times Distribution (Server Time)
-                </Typography>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={timeDistribution}
-                    margin={{
-                      top: 20,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
+                  <Tab label="Bar Chart" />
+                  <Tab label="Pie Chart" />
+                </Tabs>
+              </Box>
+
+              {currentTab === 0 && (
+                <Box sx={{ mb: 4, height: isSmallScreen ? 500 : 300 }}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: "rgba(255, 255, 255, 0.9)",
+                      mb: 2,
+                      fontWeight: 600,
                     }}
                   >
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      stroke="rgba(255, 255, 255, 0.1)"
-                    />
-                    <XAxis
-                      dataKey="hour"
-                      stroke="rgba(255, 255, 255, 0.7)"
-                      tick={{ fill: "rgba(255, 255, 255, 0.7)" }}
-                    />
-                    <YAxis
-                      stroke="rgba(255, 255, 255, 0.7)"
-                      tick={{ fill: "rgba(255, 255, 255, 0.7)" }}
-                    />
-                    <RechartsTooltip
-                      contentStyle={{
-                        backgroundColor: "rgba(28, 28, 28, 0.95)",
-                        border: "1px solid rgba(255, 255, 255, 0.1)",
-                        color: "rgba(255, 255, 255, 0.9)",
+                    Popular Times Distribution (Server Time)
+                  </Typography>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={timeDistribution}
+                      layout={isSmallScreen ? "vertical" : "horizontal"}
+                      margin={{
+                        top: 20,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
                       }}
-                      labelFormatter={(label) => `Server Time: ${label}`}
-                      formatter={(value: number) => [
-                        `${value} responses`,
-                        "Count",
-                      ]}
-                    />
-                    <Bar
-                      dataKey="count"
-                      fill="url(#colorGradient)"
-                      radius={[4, 4, 0, 0]}
-                    />
-                    <defs>
-                      <linearGradient
-                        id="colorGradient"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
+                    >
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="rgba(255, 255, 255, 0.1)"
+                      />
+                      {isSmallScreen ? (
+                        <XAxis
+                          type="number"
+                          stroke="rgba(255, 255, 255, 0.7)"
+                          tick={{ fill: "rgba(255, 255, 255, 0.7)" }}
+                        />
+                      ) : (
+                        <XAxis
+                          dataKey="hour"
+                          stroke="rgba(255, 255, 255, 0.7)"
+                          tick={{ fill: "rgba(255, 255, 255, 0.7)" }}
+                        />
+                      )}
+                      {isSmallScreen ? (
+                        <YAxis
+                          dataKey="hour"
+                          type="category"
+                          stroke="rgba(255, 255, 255, 0.7)"
+                          tick={{ fill: "rgba(255, 255, 255, 0.7)" }}
+                        />
+                      ) : (
+                        <YAxis
+                          stroke="rgba(255, 255, 255, 0.7)"
+                          tick={{ fill: "rgba(255, 255, 255, 0.7)" }}
+                        />
+                      )}
+                      <RechartsTooltip
+                        contentStyle={{
+                          backgroundColor: "rgba(28, 28, 28, 0.95)",
+                          border: "1px solid rgba(255, 255, 255, 0.1)",
+                          color: "rgba(255, 255, 255, 0.9)",
+                        }}
+                        labelFormatter={(label) => `Server Time: ${label}`}
+                        formatter={(value: number) => [
+                          `${value} responses`,
+                          "Count",
+                        ]}
+                      />
+                      <Bar
+                        dataKey="count"
+                        fill="url(#colorGradient)"
+                        radius={[4, 4, 0, 0]}
+                      />
+                      <defs>
+                        <linearGradient
+                          id="colorGradient"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="5%"
+                            stopColor="#ff4d4d"
+                            stopOpacity={0.8}
+                          />
+                          <stop
+                            offset="95%"
+                            stopColor="#ff8533"
+                            stopOpacity={0.8}
+                          />
+                        </linearGradient>
+                      </defs>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </Box>
+              )}
+
+              {currentTab === 1 && (
+                <Box sx={{ mb: 4, height: 350 }}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: "rgba(255, 255, 255, 0.9)",
+                      mb: 2,
+                      fontWeight: 600,
+                    }}
+                  >
+                    Popular Times Distribution (Pie Chart)
+                  </Typography>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={timeDistribution}
+                        dataKey="count"
+                        nameKey="hour"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        fill="#8884d8"
+                        label
                       >
-                        <stop
-                          offset="5%"
-                          stopColor="#ff4d4d"
-                          stopOpacity={0.8}
-                        />
-                        <stop
-                          offset="95%"
-                          stopColor="#ff8533"
-                          stopOpacity={0.8}
-                        />
-                      </linearGradient>
-                    </defs>
-                  </BarChart>
-                </ResponsiveContainer>
-              </Box>
+                        {timeDistribution.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={
+                              [
+                                "#ff4d4d",
+                                "#ff8533",
+                                "#ffab73",
+                                "#ffd6b3",
+                                "#ffe0cc",
+                                "#fff0e6",
+                              ][index % 6]
+                            }
+                          />
+                        ))}
+                      </Pie>
+                      <RechartsTooltip
+                        contentStyle={{
+                          backgroundColor: "rgba(28, 28, 28, 0.95)",
+                          border: "1px solid rgba(255, 255, 255, 0.1)",
+                          color: "rgba(255, 255, 255, 0.9)",
+                        }}
+                        formatter={(value: number, name: string) => [
+                          `${value} responses`,
+                          `Server Time: ${name}`,
+                        ]}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </Box>
+              )}
 
               <TableContainer>
                 <Table>
