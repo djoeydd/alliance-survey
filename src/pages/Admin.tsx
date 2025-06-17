@@ -86,7 +86,8 @@ export default function Admin() {
       });
 
       // Extract the offset from the formatted string (e.g., "GMT-05:00" -> -5)
-      const offsetStr = formatter.format(date).split(" ")[2];
+      const formattedDate = formatter.format(date);
+      const offsetStr = formattedDate.split(" ").pop() || "";
       const match = offsetStr.match(/GMT([+-]?\d+)(?::\d+)?/);
 
       if (match) {
@@ -95,9 +96,15 @@ export default function Admin() {
         return offset;
       }
 
-      console.log(
-        `No offset found in timezone ${ianaTimezone}, defaulting to 0`
-      );
+      // Fallback to GMT offset if IANA timezone parsing fails
+      const gmtMatch = timezone.match(/GMT([+-]?\d+(?:\.\d+)?)/);
+      if (gmtMatch) {
+        const offset = Math.floor(parseFloat(gmtMatch[1]));
+        console.log(`Extracted GMT offset ${offset} from timezone ${timezone}`);
+        return offset;
+      }
+
+      console.log(`No offset found in timezone ${timezone}, defaulting to 0`);
       return 0;
     } catch (error) {
       console.error("Error parsing timezone:", timezone, error);
