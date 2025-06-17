@@ -93,7 +93,7 @@ export default function Admin() {
       // Get the timezone offset in minutes
       const formatter = new Intl.DateTimeFormat("en-US", {
         timeZone: ianaTimezone,
-        timeZoneName: "short",
+        timeZoneName: "longOffset",
       });
 
       // Extract the offset from the formatted string (e.g., "GMT-05:00" -> -5)
