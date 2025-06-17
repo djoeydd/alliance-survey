@@ -1,0 +1,50 @@
+{
+  "allianceSurvey": {
+    "title": "แบบสำรวจพันธมิตร",
+    "subtitle": "ช่วยเราหาเวลาที่เหมาะสมที่สุดสำหรับทุกคน",
+    "inGameName": "ชื่อในเกม",
+    "timeZone": "เขตเวลา",
+    "availableTimes": "เวลาที่ว่าง",
+    "submit": "ส่ง",
+    "submitSuccess": "ส่งแบบสำรวจสำเร็จแล้ว!",
+    "submitError": "เกิดข้อผิดพลาดในการส่ง กรุณาลองใหม่อีกครั้ง",
+    "thankYou": "ขอบคุณ!",
+    "thankYouMessage": "คำตอบของคุณได้รับการบันทึกแล้ว คุณสามารถดูผลลัพธ์หรือปิดหน้าต่างนี้ได้",
+    "backToSurvey": "กลับไปที่แบบสำรวจ",
+    "viewResults": "ดูผลลัพธ์",
+    "timeZones": {
+      "local": "เวลาท้องถิ่นของคุณ",
+      "cities": {
+        "baker_island": "เกาะเบเกอร์",
+        "samoa": "ซามัว",
+        "hawaii": "ฮาวาย",
+        "alaska": "อลาสก้า",
+        "los_angeles": "ลอสแองเจลิส",
+        "denver": "เดนเวอร์",
+        "chicago": "ชิคาโก",
+        "new_york": "นิวยอร์ก",
+        "caracas": "การากัส",
+        "sao_paulo": "เซาเปาโล",
+        "fernando": "เฟอร์นันโด เดอ นอโรนยา",
+        "cape_verde": "เคปเวิร์ด",
+        "london": "ลอนดอน",
+        "paris": "ปารีส",
+        "cairo": "ไคโร",
+        "moscow": "มอสโก",
+        "dubai": "ดูไบ",
+        "karachi": "การาจี",
+        "new_delhi": "นิวเดลี",
+        "dhaka": "ธากา",
+        "bangkok": "กรุงเทพฯ",
+        "beijing": "ปักกิ่ง",
+        "tokyo": "โตเกียว",
+        "adelaide": "แอดิเลด",
+        "sydney": "ซิดนีย์",
+        "solomon": "หมู่เกาะโซโลมอน",
+        "auckland": "โอ๊คแลนด์",
+        "samoa_tonga": "ซามัวและตองกา",
+        "line_islands": "หมู่เกาะไลน์"
+      }
+    }
+  }
+}
